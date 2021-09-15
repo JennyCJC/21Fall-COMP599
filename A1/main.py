@@ -24,5 +24,7 @@ def main():
     #1A
     degreeDistribution(proteinSimpleGraph)
 
+    #1B
+
 if __name__ == "__main__":
     main()
