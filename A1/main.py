@@ -22,9 +22,9 @@ proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 
 def main():
     # Question 1
-    # networkPatterns(proteinSimpleGraph)
+    networkPatterns(proteinSimpleGraph)
     # Question 3
-    proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
+    #proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
     # networkPatterns(proteinBAGraph)
     
 
