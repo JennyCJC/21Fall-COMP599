@@ -1,8 +1,19 @@
+import random
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.sparse.linalg
 from scipy import sparse
 from helpers import *
+
+def networkPatterns(simpleGraph):
+    degreeDistribution(simpleGraph)         #1A
+    clusterCoefDistribution(simpleGraph)    #1B
+    shortestPathDistribution(simpleGraph)   #1C
+    connectivity(simpleGraph)               #1D
+    eigenvalueDistribution(simpleGraph)     #1E
+    degreeCorrelation(simpleGraph)          #1F
+    degreeClusterCoefRelation(simpleGraph)  #1G
+
 
 def degreeDistribution(simpleGraph):
     #calculate degree and frequency
@@ -118,6 +129,53 @@ def degreeClusterCoefRelation(simpleGraph):
     degree = degree[finiteIdx]
     plt.scatter(degree, finiteC)
     plt.show()
+
+
+def create_BA_Graph(simpleGraph):
+    numFinalNodes = np.shape(simpleGraph)[0]
+    numAvgEdges = int(round(simpleGraph.sum() / numFinalNodes, 2))
+    numInitNodes = numAvgEdges
+    BA_graph = BA_Model(numInitNodes, numFinalNodes, numAvgEdges)
+    return BA_graph
+
+
+def BA_Model(numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
+    # check input parameters
+    if numInitNodes < numAvgEdges:
+        raise ValueError("The number of initial connected nodes should be " 
+        + "greater than the number of average edges to be added")
+
+    # create an initial connected graph of numInitNodes nodes
+    random.seed(setSeed)
+    edgeProb = 0.5
+    BA_graph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
+    for nodeIdx in range(numInitNodes):
+        sampleEdge = np.random.binomial(n=1, p=edgeProb, size=numInitNodes)
+        existEdge = np.nonzero(sampleEdge)[0]
+        existEdge = existEdge[np.nonzero(existEdge == nodeIdx)]
+        BA_graph[nodeIdx, existEdge] = 1
+    
+    # Add new nodes one at a time
+    for nodeIdx in range(numInitNodes, numFinalNodes):
+        # calculate the probility of connecting to each existing node
+        sumG = BA_graph.sum(axis=1)
+        degree = np.squeeze(np.asarray(sumG))
+        overallDegree = np.sum(degree)
+        edgeProb = degree[:nodeIdx] / overallDegree
+
+        # select the numAvgEdges most probable nodes to connect 
+        mostProbableEdge = np.argsort((-1)*edgeProb)[:numAvgEdges]
+        BA_graph[nodeIdx, mostProbableEdge] = 1
+        BA_graph[mostProbableEdge, nodeIdx] = 1
+    
+    return BA_graph
+
+
+
+
+
+
+ 
 
 
 
