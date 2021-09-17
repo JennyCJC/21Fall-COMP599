@@ -21,27 +21,12 @@ proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 #Execution
 
 def main():
-    #1A
-    #degreeDistribution(proteinSimpleGraph)
-
-    #1B
-    #clusterCoefDistribution(proteinSimpleGraph)
-
-    #1C
-    #shortestPathDistribution(proteinSimpleGraph)
-
-    #1D
-    #connectivity(proteinSimpleGraph)
-
-    #1E
-    #eigenvalueDistribution(proteinSimpleGraph)
-
-    #1F
-    #degreeCorrelation(proteinSimpleGraph)
-
-    #1G
-    degreeClusterCoefRelation(proteinSimpleGraph)
-
+    # Question 1
+    # networkPatterns(proteinSimpleGraph)
+    # Question 3
+    proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
+    # networkPatterns(proteinBAGraph)
+    
 
 
 if __name__ == "__main__":
