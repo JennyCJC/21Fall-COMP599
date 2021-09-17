@@ -11,17 +11,17 @@ def removeSelfLoop(edgeList):
             toRemove.append(i)
     return np.delete(edgeList, toRemove, axis=0)
 
-#generate crs matrix
-def generateCRS(edgeList):
+#generate csc matrix
+def generateCSC(edgeList):
     row = edgeList[:, 0]
     col = edgeList[:, 1]
     sizeOfMatrix = len(row)
     data = [1]*sizeOfMatrix
-    return sparse.csr_matrix((data, (row, col)), shape=(sizeOfMatrix, sizeOfMatrix))
+    return sparse.csc_matrix((data, (row, col)), shape=(sizeOfMatrix, sizeOfMatrix))
 
 #make the graph undirected
 def makeSymmetric(edgeList):
-    A = generateCRS(edgeList)
+    A = generateCSC(edgeList)
     T = A.transpose()
     result = A.maximum(T)
 

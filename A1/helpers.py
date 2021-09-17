@@ -1,3 +1,4 @@
+import numpy as np
 
 #count how many times an element occurs in an array
 def count(elem, array):
@@ -12,4 +13,7 @@ def freq(x):
     # freqs = [(value, count(value, x) / len(x)) for value in set(x)] 
     freqs = [[value, count(value, x)] for value in set(x)] 
     return freqs
+
+
+
 

@@ -1,6 +1,6 @@
 import numpy as np
 from clean import generateSimpleGraph
-from questions import degreeDistribution
+from questions import *
 
 #########
 #Raw data
@@ -22,10 +22,27 @@ proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 
 def main():
     #1A
-    degreeDistribution(proteinSimpleGraph)
+    #degreeDistribution(proteinSimpleGraph)
 
     #1B
-    #another try
+    #clusterCoefDistribution(proteinSimpleGraph)
+
+    #1C
+    #shortestPathDistribution(proteinSimpleGraph)
+
+    #1D
+    #connectivity(proteinSimpleGraph)
+
+    #1E
+    #eigenvalueDistribution(proteinSimpleGraph)
+
+    #1F
+    #degreeCorrelation(proteinSimpleGraph)
+
+    #1G
+    degreeClusterCoefRelation(proteinSimpleGraph)
+
+
 
 if __name__ == "__main__":
     main()
