@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 #count how many times an element occurs in an array
 def count(elem, array):
@@ -11,7 +12,6 @@ def count(elem, array):
 
 #calculate the frequency of numbers in the set
 def freq(x):
-    # freqs = [(value, count(value, x) / len(x)) for value in set(x)] 
     freqs = [[value, count(value, x)] for value in set(x)] 
     return freqs
 
@@ -57,8 +57,13 @@ def logBinning(binSize, degreeData):
             averageY /= num
             averagePoint.append([averageX, averageY])
 
-    return averagePoint
+    return np.array(averagePoint)
             
-
-
-
+def plotLine(xData, yData, xLabel, yLabel, title):
+    plt.plot(xData, yData, linewidth=2.5)
+    plt.title(title, fontsize=14)
+    plt.xlim(min(xData), max(xData))
+    plt.ylim(min(yData), max(yData))
+    plt.xlabel(xLabel, fontsize=12.5)
+    plt.ylabel(yLabel, fontsize=12.5)
+    plt.show()

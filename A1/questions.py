@@ -11,9 +11,9 @@ def networkPatterns(simpleGraph):
     #clusterCoefDistribution(simpleGraph)    #1B
     #shortestPathDistribution(simpleGraph)   #1C
     #connectivity(simpleGraph)               #1D
-    #eigenvalueDistribution(simpleGraph)     #1E
-    degreeCorrelation(simpleGraph)          #1F
-    degreeClusterCoefRelation(simpleGraph)  #1G
+    eigenvalueDistribution(simpleGraph)     #1E
+    # degreeCorrelation(simpleGraph)          #1F
+    # degreeClusterCoefRelation(simpleGraph)  #1G
 
 
 
@@ -106,7 +106,7 @@ def shortestPathDistribution(simpleGraph):
     plt.show()
 
 
-
+# TODO: plot graph
 def connectivity(simpleGraph):
     # calculate and print the number of connected components
     numConnected, labels = sparse.csgraph.connected_components(simpleGraph, 
@@ -122,10 +122,18 @@ def connectivity(simpleGraph):
 def eigenvalueDistribution(simpleGraph):
     # calculate the eigenvalues of this graph
     laplacian = sparse.csgraph.laplacian(simpleGraph)
-    laplacian = laplacian.asfptype().toarray()
-    eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
-    eval_min = sparse.linalg.eigs(laplacian, k=100, which='SM')
+    laplacian = laplacian.todense()
+    # eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
+
+    #faster way to calculate eval_min
+    eval_min = scipy.linalg.eigvalsh(laplacian, eigvals=(0, 2000))
+    uniqueE, counts = np.unique(eval_min, return_counts=True)
+    nonZero = uniqueE[np.nonzero(uniqueE)]
+    print('Spectral gap is: ' + str(min(nonZero)))
+    plotLine(uniqueE, counts, 'Eigenvalues', 'Frequency', 'Eigenvalue Distribution')
+
     # NOT SURE WHAT TO DO WITH THE COMPLEX EIGENVALUES
+    # UPDATE: I don't think complex eigenvalues should be a concern, because we have found a way to find the minimum and the spectral gap
 
  
 
