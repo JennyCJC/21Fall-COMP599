@@ -59,8 +59,11 @@ def logBinning(binSize, degreeData):
 
     return np.array(averagePoint)
             
-def plotLine(xData, yData, xLabel, yLabel, title):
-    plt.plot(xData, yData, linewidth=2.5)
+def plotGraph(xData, yData, xLabel, yLabel, title, type):
+    if type == 'line':
+        plt.plot(xData, yData, linewidth=2.5)
+    elif type == 'scatter':
+        plt.scatter(xData, yData)
     plt.title(title, fontsize=14)
     plt.xlim(min(xData), max(xData))
     plt.ylim(min(yData), max(yData))
