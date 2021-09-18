@@ -7,11 +7,11 @@ from helpers import *
 import math
 
 def networkPatterns(simpleGraph):
-    #degreeDistribution(simpleGraph)         #1A
+    degreeDistribution(simpleGraph)         #1A
     #clusterCoefDistribution(simpleGraph)    #1B
     #shortestPathDistribution(simpleGraph)   #1C
     #connectivity(simpleGraph)               #1D
-    eigenvalueDistribution(simpleGraph)     #1E
+    # eigenvalueDistribution(simpleGraph)     #1E
     # degreeCorrelation(simpleGraph)          #1F
     # degreeClusterCoefRelation(simpleGraph)  #1G
 
@@ -39,8 +39,10 @@ def degreeDistribution(simpleGraph):
     plt.plot(list(map(math.exp, xValues)), list(map(math.exp, yValues)))
     
     plt.loglog(degreeData[:, 0],degreeData[:, 1], "o")
+    plt.xlabel('Degrees', fontsize=12.5)
+    plt.ylabel('Frequency', fontsize=12.5)
     plt.show()
-
+    
     #return slope
     print('Slope for the degree distribution is: ' + str(coefficients[0]))
 
@@ -67,13 +69,7 @@ def clusterCoefDistribution(simpleGraph):
     print("Average clustering coefficient calculated by taking the mean:  " + str(avgC))
 
     # show the distribution in a plot
-    plt.plot(uniqueC, freq, linewidth=2.5)
-    plt.title('Clustering coefficient distribution', fontsize=14)
-    plt.xlim(min(uniqueC), max(uniqueC))
-    plt.ylim(top=1)
-    plt.xlabel('Clustering coefficient', fontsize=12.5)
-    plt.ylabel('Cumulative probability', fontsize=12.5)
-    plt.show()
+    plotGraph(uniqueC, freq, 'Clustering coefficient', 'Cumulative probability', 'Clustering coefficient distribution', 'line')
 
 
 
@@ -87,23 +83,15 @@ def shortestPathDistribution(simpleGraph):
     cumFreq = np.cumsum(counts) / sum(counts)
     freq = counts / sum(counts)
 
-    # show the probability density in a plot
-    plt.plot(uniqueDistance, freq, linewidth=2.5)
-    plt.title('Shortest path distribution (PDF)', fontsize=14)
-    plt.xlim(min(uniqueDistance), max(uniqueDistance))
-    plt.ylim(top=1)
-    plt.xlabel('Shortest distance', fontsize=12.5)
-    plt.ylabel('Probability density', fontsize=12.5)
-    plt.show()
+     #show shortest distance distribution with number of nodes
+    plotGraph(uniqueDistance, counts, 'Shortest Distance', 'Number of Nodes', 'Shortest path distribution', 'line')
 
-    # show the cumulative probability in a plot
-    plt.plot(uniqueDistance, cumFreq, linewidth=2.5)
-    plt.title('Shortest path distribution (CDF)', fontsize=14)
-    plt.xlim(min(uniqueDistance), max(uniqueDistance))
-    plt.ylim(top=1)
-    plt.xlabel('Shortest distance', fontsize=12.5)
-    plt.ylabel('Cumulative probability', fontsize=12.5)
-    plt.show()
+    #show the probability density in a plot
+    plotGraph(uniqueDistance, freq, 'Shortest Distance', 'Probability density', 'Shortest path distribution (PDF)', 'line')
+
+    #show the cumulative probability in a plot
+    plotGraph(uniqueDistance, cumFreq, 'Shortest Distance', 'Cumulative probability', 'Shortest path distribution (CDF)', 'line')
+
 
 
 # TODO: plot graph
@@ -130,11 +118,7 @@ def eigenvalueDistribution(simpleGraph):
     uniqueE, counts = np.unique(eval_min, return_counts=True)
     nonZero = uniqueE[np.nonzero(uniqueE)]
     print('Spectral gap is: ' + str(min(nonZero)))
-    plotLine(uniqueE, counts, 'Eigenvalues', 'Frequency', 'Eigenvalue Distribution')
-
-    # NOT SURE WHAT TO DO WITH THE COMPLEX EIGENVALUES
-    # UPDATE: I don't think complex eigenvalues should be a concern, because we have found a way to find the minimum and the spectral gap
-
+    plotGraph(uniqueE, counts, 'Eigenvalues', 'Frequency', 'Eigenvalue Distribution', 'line')
  
 
 def degreeCorrelation(simpleGraph):
@@ -153,13 +137,7 @@ def degreeCorrelation(simpleGraph):
     print("Overall degree correlation: " + str(overallCorr))
 
     # plot degree of source VS degree of destination
-    plt.scatter(sourceDegree, destinationDegree)
-    plt.xlim(0, np.max(degree))
-    plt.ylim(0, np.max(degree))
-    plt.xlabel("Degree of source nodes", fontsize=12.5)
-    plt.ylabel("Degree of destination nodes", fontsize=12.5)
-    plt.title("Degree correlation", fontsize=14)
-    plt.show()
+    plotGraph(sourceDegree, destinationDegree, "Degree of source nodes", "Degree of destination nodes", "Degree correlation", 'scatter')
     # HAVEN'T BIN EDGES WITH LOW INTENSITY TO CAPTURE REGIONS WITH HIGH DENSITY
 
 
@@ -178,11 +156,7 @@ def degreeClusterCoefRelation(simpleGraph):
 
     # plot degree VS clustering coefficient
     degree = degree[finiteIdx]
-    plt.scatter(degree, finiteC)
-    plt.xlabel("Degree", fontsize=12.5)
-    plt.ylabel("Local CC", fontsize=12.5)
-    plt.title("Degree-clustering coefficient relation", fontsize=14)
-    plt.show()
+    plotGraph(degree, finiteC, "Degree of source nodes", "Degree of destination nodes", "Degree correlation", 'scatter')
 
 
 
