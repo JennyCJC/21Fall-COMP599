@@ -7,13 +7,14 @@ from helpers import *
 import math
 
 def networkPatterns(simpleGraph):
-    degreeDistribution(simpleGraph)         #1A
-    clusterCoefDistribution(simpleGraph)    #1B
-    shortestPathDistribution(simpleGraph)   #1C
-    connectivity(simpleGraph)               #1D
-    eigenvalueDistribution(simpleGraph)     #1E
+    #degreeDistribution(simpleGraph)         #1A
+    #clusterCoefDistribution(simpleGraph)    #1B
+    #shortestPathDistribution(simpleGraph)   #1C
+    #connectivity(simpleGraph)               #1D
+    #eigenvalueDistribution(simpleGraph)     #1E
     degreeCorrelation(simpleGraph)          #1F
     degreeClusterCoefRelation(simpleGraph)  #1G
+
 
 
 def degreeDistribution(simpleGraph):
@@ -43,13 +44,15 @@ def degreeDistribution(simpleGraph):
     #return slope
     print('Slope for the degree distribution is: ' + str(coefficients[0]))
 
+
 def clusterCoefDistribution(simpleGraph):
     # calculate degree 
     sumG = simpleGraph.sum(axis=1)
     degree = np.squeeze(np.asarray(sumG))
 
     # calculate local clustering coefficient & frequency
-    A3 = simpleGraph * simpleGraph * simpleGraph
+    A2 = simpleGraph * simpleGraph
+    A3 = A2 * simpleGraph
     numClosedPath = np.diagonal(A3.toarray())
     numPath = degree * (degree-1)
     finiteIdx = np.nonzero(numPath)
@@ -57,14 +60,21 @@ def clusterCoefDistribution(simpleGraph):
     uniqueC, counts = np.unique(finiteC, return_counts=True)
     freq = np.cumsum(counts) / sum(counts)
 
-    # compute and print the average C
-    avgC = np.mean(finiteC)
-    print("Average clustering coefficient: " + str(avgC))
+    # compute and report the global clustering coefficient
+    globalC = np.trace(A3.toarray()) / (np.sum(A2.toarray())-np.trace(A2.toarray()))
+    avgC = np.sum(finiteC) / np.shape(simpleGraph)[0]
+    print("Global clustering coefficient: " + str(globalC))
+    print("Average clustering coefficient calculated by taking the mean:  " + str(avgC))
 
     # show the distribution in a plot
-    plt.plot(uniqueC, freq)
-    plt.xlim([0,2])
+    plt.plot(uniqueC, freq, linewidth=2.5)
+    plt.title('Clustering coefficient distribution', fontsize=14)
+    plt.xlim(min(uniqueC), max(uniqueC))
+    plt.ylim(top=1)
+    plt.xlabel('Clustering coefficient', fontsize=12.5)
+    plt.ylabel('Cumulative probability', fontsize=12.5)
     plt.show()
+
 
 
 def shortestPathDistribution(simpleGraph):
@@ -74,11 +84,27 @@ def shortestPathDistribution(simpleGraph):
     finiteIdx = np.isfinite(uniqueDistance)
     uniqueDistance = uniqueDistance[finiteIdx]
     counts = counts[finiteIdx]
+    cumFreq = np.cumsum(counts) / sum(counts)
     freq = counts / sum(counts)
 
-    # show the distribution in a plot
-    plt.plot(uniqueDistance, freq)
+    # show the probability density in a plot
+    plt.plot(uniqueDistance, freq, linewidth=2.5)
+    plt.title('Shortest path distribution (PDF)', fontsize=14)
+    plt.xlim(min(uniqueDistance), max(uniqueDistance))
+    plt.ylim(top=1)
+    plt.xlabel('Shortest distance', fontsize=12.5)
+    plt.ylabel('Probability density', fontsize=12.5)
     plt.show()
+
+    # show the cumulative probability in a plot
+    plt.plot(uniqueDistance, cumFreq, linewidth=2.5)
+    plt.title('Shortest path distribution (CDF)', fontsize=14)
+    plt.xlim(min(uniqueDistance), max(uniqueDistance))
+    plt.ylim(top=1)
+    plt.xlabel('Shortest distance', fontsize=12.5)
+    plt.ylabel('Cumulative probability', fontsize=12.5)
+    plt.show()
+
 
 
 def connectivity(simpleGraph):
@@ -92,13 +118,16 @@ def connectivity(simpleGraph):
     print("Number of nodes in the GCC: " + str(max(counts)))
 
 
+
 def eigenvalueDistribution(simpleGraph):
     # calculate the eigenvalues of this graph
     laplacian = sparse.csgraph.laplacian(simpleGraph)
     laplacian = laplacian.asfptype().toarray()
     eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
     eval_min = sparse.linalg.eigs(laplacian, k=100, which='SM')
+    # NOT SURE WHAT TO DO WITH THE COMPLEX EIGENVALUES
 
+ 
 
 def degreeCorrelation(simpleGraph):
     # calculate degree 
@@ -119,7 +148,12 @@ def degreeCorrelation(simpleGraph):
     plt.scatter(sourceDegree, destinationDegree)
     plt.xlim(0, np.max(degree))
     plt.ylim(0, np.max(degree))
+    plt.xlabel("Degree of source nodes", fontsize=12.5)
+    plt.ylabel("Degree of destination nodes", fontsize=12.5)
+    plt.title("Degree correlation", fontsize=14)
     plt.show()
+    # HAVEN'T BIN EDGES WITH LOW INTENSITY TO CAPTURE REGIONS WITH HIGH DENSITY
+
 
 
 def degreeClusterCoefRelation(simpleGraph):
@@ -137,7 +171,11 @@ def degreeClusterCoefRelation(simpleGraph):
     # plot degree VS clustering coefficient
     degree = degree[finiteIdx]
     plt.scatter(degree, finiteC)
+    plt.xlabel("Degree", fontsize=12.5)
+    plt.ylabel("Local CC", fontsize=12.5)
+    plt.title("Degree-clustering coefficient relation", fontsize=14)
     plt.show()
+
 
 
 def create_BA_Graph(simpleGraph):
@@ -146,6 +184,7 @@ def create_BA_Graph(simpleGraph):
     numInitNodes = numAvgEdges
     BA_graph = BA_Model(numInitNodes, numFinalNodes, numAvgEdges)
     return BA_graph
+
 
 
 def BA_Model(numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
