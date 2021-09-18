@@ -8,10 +8,10 @@ import math
 
 def networkPatterns(simpleGraph):
     #degreeDistribution(simpleGraph)         #1A
-    # clusterCoefDistribution(simpleGraph)    #1B
-    shortestPathDistribution(simpleGraph)   #1C
+    #clusterCoefDistribution(simpleGraph)    #1B
+    #shortestPathDistribution(simpleGraph)   #1C
     #connectivity(simpleGraph)               #1D
-    #eigenvalueDistribution(simpleGraph)     #1E
+    eigenvalueDistribution(simpleGraph)     #1E
     # degreeCorrelation(simpleGraph)          #1F
     # degreeClusterCoefRelation(simpleGraph)  #1G
 
@@ -24,7 +24,7 @@ def degreeDistribution(simpleGraph):
     degreeData = np.array(freq(sumArray))
 
     #log binning with bin size 15, but bin could also be removed if no data belongs to the bin
-    degreeData = logBinning(15, degreeData)
+    degreeData = np.array(logBinning(15, degreeData))
     
     #find polynomial fit
     logX = list(map(math.log1p, degreeData[:, 0]))
@@ -39,8 +39,6 @@ def degreeDistribution(simpleGraph):
     plt.plot(list(map(math.exp, xValues)), list(map(math.exp, yValues)))
     
     plt.loglog(degreeData[:, 0],degreeData[:, 1], "o")
-    plt.xlabel('Degrees', fontsize=12.5)
-    plt.ylabel('Frequency', fontsize=12.5)
     plt.show()
 
     #return slope
@@ -89,17 +87,26 @@ def shortestPathDistribution(simpleGraph):
     cumFreq = np.cumsum(counts) / sum(counts)
     freq = counts / sum(counts)
 
-    #show shortest distance distribution with number of nodes
-    plotLine(uniqueDistance, counts, 'Shortest Distance', 'Number of Nodes', 'Shortest path distribution')
+    # show the probability density in a plot
+    plt.plot(uniqueDistance, freq, linewidth=2.5)
+    plt.title('Shortest path distribution (PDF)', fontsize=14)
+    plt.xlim(min(uniqueDistance), max(uniqueDistance))
+    plt.ylim(top=1)
+    plt.xlabel('Shortest distance', fontsize=12.5)
+    plt.ylabel('Probability density', fontsize=12.5)
+    plt.show()
 
-    #show the probability density in a plot
-    plotLine(uniqueDistance, freq, 'Shortest Distance', 'Probability density', 'Shortest path distribution (PDF)')
+    # show the cumulative probability in a plot
+    plt.plot(uniqueDistance, cumFreq, linewidth=2.5)
+    plt.title('Shortest path distribution (CDF)', fontsize=14)
+    plt.xlim(min(uniqueDistance), max(uniqueDistance))
+    plt.ylim(top=1)
+    plt.xlabel('Shortest distance', fontsize=12.5)
+    plt.ylabel('Cumulative probability', fontsize=12.5)
+    plt.show()
 
-    #show the cumulative probability in a plot
-    plotLine(uniqueDistance, cumFreq, 'Shortest Distance', 'Cumulative probability', 'Shortest path distribution (CDF)')
 
-
-
+# TODO: plot graph
 def connectivity(simpleGraph):
     # calculate and print the number of connected components
     numConnected, labels = sparse.csgraph.connected_components(simpleGraph, 
@@ -115,10 +122,18 @@ def connectivity(simpleGraph):
 def eigenvalueDistribution(simpleGraph):
     # calculate the eigenvalues of this graph
     laplacian = sparse.csgraph.laplacian(simpleGraph)
-    laplacian = laplacian.asfptype().toarray()
-    eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
-    eval_min = sparse.linalg.eigs(laplacian, k=100, which='SM')
+    laplacian = laplacian.todense()
+    # eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
+
+    #faster way to calculate eval_min
+    eval_min = scipy.linalg.eigvalsh(laplacian, eigvals=(0, 2000))
+    uniqueE, counts = np.unique(eval_min, return_counts=True)
+    nonZero = uniqueE[np.nonzero(uniqueE)]
+    print('Spectral gap is: ' + str(min(nonZero)))
+    plotLine(uniqueE, counts, 'Eigenvalues', 'Frequency', 'Eigenvalue Distribution')
+
     # NOT SURE WHAT TO DO WITH THE COMPLEX EIGENVALUES
+    # UPDATE: I don't think complex eigenvalues should be a concern, because we have found a way to find the minimum and the spectral gap
 
  
 
