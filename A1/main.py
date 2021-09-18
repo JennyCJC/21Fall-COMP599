@@ -1,12 +1,13 @@
 import numpy as np
 from clean import generateSimpleGraph
-from questions import degreeDistribution
+from questions import *
 
 #########
 #Raw data
 proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
 # citationEdgeList = np.loadtxt("networks/citation.edgelist.txt", dtype=int)
 # wwwEdgeList = np.loadtxt("networks/www.edgelist.txt", dtype=int)
+# internetEdgeList = np.loadtxt("networks/internet.edgelist.txt", dtype=int)
 # using protein to test for now, reading all the data in at once is sloooooowwwwwww
 
 
@@ -14,18 +15,21 @@ proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
 #Simple Graphs and Execution of functions
 
 proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
-#citationSimpleGraph = generateSimpleGraph(citationEdgeList)
+# citationSimpleGraph = generateSimpleGraph(citationEdgeList)
+# internetSimpleGraph = generateSimpleGraph(internetEdgeList)
 
 
 #########
 #Execution
 
 def main():
-    #1A
-    degreeDistribution(proteinSimpleGraph)
+    # Question 1
+    networkPatterns(proteinSimpleGraph)
+    # Question 3
+    proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
+    # networkPatterns(proteinBAGraph)
+    
 
-    #1B
-    #another try
 
 if __name__ == "__main__":
     main()
