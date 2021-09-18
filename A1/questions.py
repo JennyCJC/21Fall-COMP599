@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import scipy.sparse.linalg
 from scipy import sparse
 from helpers import *
+import math
 
 def networkPatterns(simpleGraph):
     degreeDistribution(simpleGraph)         #1A
@@ -21,18 +22,26 @@ def degreeDistribution(simpleGraph):
     sumArray = np.squeeze(np.asarray(sumG))
     degreeData = np.array(freq(sumArray))
 
+    #log binning with bin size 15, but bin could also be removed if no data belongs to the bin
+    degreeData = np.array(logBinning(15, degreeData))
+    
+    #find polynomial fit
+    logX = list(map(math.log1p, degreeData[:, 0]))
+    logY = list(map(math.log1p, degreeData[:, 1]))
+
+    coefficients = np.polyfit(logX, logY, 1)
+    poly = np.poly1d(coefficients)
+
     #show data in plot
-    plt.loglog(degreeData[:, 0],degreeData[:, 1])
+    xValues = list(map(math.log1p, (np.arange(max(degreeData[:, 0])))))
+    yValues = np.polyval(poly, xValues)
+    plt.plot(list(map(math.exp, xValues)), list(map(math.exp, yValues)))
+    
+    plt.loglog(degreeData[:, 0],degreeData[:, 1], "o")
     plt.show()
 
-# ten = [10]
-# powerDegree = [0.5, 1.0, 1.5, 2.0]
-# powerFreq = [1, 2, 3, 4]
-
-# np.polyfit(np.power(ten, powerDegree), np.power(ten, powerFreq), )
-# print(np.power(ten, powerDegree))
-# print(stats.relfreq(sumArray, numbins=100))
-
+    #return slope
+    print('Slope for the degree distribution is: ' + str(coefficients[0]))
 
 def clusterCoefDistribution(simpleGraph):
     # calculate degree 

@@ -7,6 +7,7 @@ from questions import *
 proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
 # citationEdgeList = np.loadtxt("networks/citation.edgelist.txt", dtype=int)
 # wwwEdgeList = np.loadtxt("networks/www.edgelist.txt", dtype=int)
+# internetEdgeList = np.loadtxt("networks/internet.edgelist.txt", dtype=int)
 # using protein to test for now, reading all the data in at once is sloooooowwwwwww
 
 
@@ -14,7 +15,8 @@ proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
 #Simple Graphs and Execution of functions
 
 proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
-#citationSimpleGraph = generateSimpleGraph(citationEdgeList)
+# citationSimpleGraph = generateSimpleGraph(citationEdgeList)
+# internetSimpleGraph = generateSimpleGraph(internetEdgeList)
 
 
 #########
@@ -22,7 +24,7 @@ proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 
 def main():
     # Question 1
-    # networkPatterns(proteinSimpleGraph)
+    networkPatterns(proteinSimpleGraph)
     # Question 3
     proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
     # networkPatterns(proteinBAGraph)
