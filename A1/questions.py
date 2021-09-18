@@ -8,12 +8,12 @@ import math
 
 def networkPatterns(simpleGraph):
     #degreeDistribution(simpleGraph)         #1A
-    #clusterCoefDistribution(simpleGraph)    #1B
-    #shortestPathDistribution(simpleGraph)   #1C
+    # clusterCoefDistribution(simpleGraph)    #1B
+    shortestPathDistribution(simpleGraph)   #1C
     #connectivity(simpleGraph)               #1D
     #eigenvalueDistribution(simpleGraph)     #1E
-    degreeCorrelation(simpleGraph)          #1F
-    degreeClusterCoefRelation(simpleGraph)  #1G
+    # degreeCorrelation(simpleGraph)          #1F
+    # degreeClusterCoefRelation(simpleGraph)  #1G
 
 
 
@@ -24,7 +24,7 @@ def degreeDistribution(simpleGraph):
     degreeData = np.array(freq(sumArray))
 
     #log binning with bin size 15, but bin could also be removed if no data belongs to the bin
-    degreeData = np.array(logBinning(15, degreeData))
+    degreeData = logBinning(15, degreeData)
     
     #find polynomial fit
     logX = list(map(math.log1p, degreeData[:, 0]))
@@ -39,6 +39,8 @@ def degreeDistribution(simpleGraph):
     plt.plot(list(map(math.exp, xValues)), list(map(math.exp, yValues)))
     
     plt.loglog(degreeData[:, 0],degreeData[:, 1], "o")
+    plt.xlabel('Degrees', fontsize=12.5)
+    plt.ylabel('Frequency', fontsize=12.5)
     plt.show()
 
     #return slope
@@ -87,23 +89,14 @@ def shortestPathDistribution(simpleGraph):
     cumFreq = np.cumsum(counts) / sum(counts)
     freq = counts / sum(counts)
 
-    # show the probability density in a plot
-    plt.plot(uniqueDistance, freq, linewidth=2.5)
-    plt.title('Shortest path distribution (PDF)', fontsize=14)
-    plt.xlim(min(uniqueDistance), max(uniqueDistance))
-    plt.ylim(top=1)
-    plt.xlabel('Shortest distance', fontsize=12.5)
-    plt.ylabel('Probability density', fontsize=12.5)
-    plt.show()
+    #show shortest distance distribution with number of nodes
+    plotLine(uniqueDistance, counts, 'Shortest Distance', 'Number of Nodes', 'Shortest path distribution')
 
-    # show the cumulative probability in a plot
-    plt.plot(uniqueDistance, cumFreq, linewidth=2.5)
-    plt.title('Shortest path distribution (CDF)', fontsize=14)
-    plt.xlim(min(uniqueDistance), max(uniqueDistance))
-    plt.ylim(top=1)
-    plt.xlabel('Shortest distance', fontsize=12.5)
-    plt.ylabel('Cumulative probability', fontsize=12.5)
-    plt.show()
+    #show the probability density in a plot
+    plotLine(uniqueDistance, freq, 'Shortest Distance', 'Probability density', 'Shortest path distribution (PDF)')
+
+    #show the cumulative probability in a plot
+    plotLine(uniqueDistance, cumFreq, 'Shortest Distance', 'Cumulative probability', 'Shortest path distribution (CDF)')
 
 
 
