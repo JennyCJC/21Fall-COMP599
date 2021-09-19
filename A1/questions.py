@@ -7,13 +7,13 @@ from helpers import *
 import math
 
 def networkPatterns(simpleGraph):
-    degreeDistribution(simpleGraph)         #1A
+    #degreeDistribution(simpleGraph)         #1A
     #clusterCoefDistribution(simpleGraph)    #1B
     #shortestPathDistribution(simpleGraph)   #1C
     #connectivity(simpleGraph)               #1D
-    # eigenvalueDistribution(simpleGraph)     #1E
-    # degreeCorrelation(simpleGraph)          #1F
-    # degreeClusterCoefRelation(simpleGraph)  #1G
+    #eigenvalueDistribution(simpleGraph)     #1E
+    degreeCorrelation(simpleGraph)          #1F
+    #degreeClusterCoefRelation(simpleGraph)  #1G
 
 
 
@@ -94,7 +94,6 @@ def shortestPathDistribution(simpleGraph):
 
 
 
-# TODO: plot graph
 def connectivity(simpleGraph):
     # calculate and print the number of connected components
     numConnected, labels = sparse.csgraph.connected_components(simpleGraph, 
@@ -160,45 +159,54 @@ def degreeClusterCoefRelation(simpleGraph):
 
 
 
-def create_BA_Graph(simpleGraph):
+def syntheticGraph(simpleGraph, model):
     numFinalNodes = np.shape(simpleGraph)[0]
     numAvgEdges = int(round(simpleGraph.sum() / numFinalNodes, 2))
-    numInitNodes = numAvgEdges
-    BA_graph = BA_Model(numInitNodes, numFinalNodes, numAvgEdges)
-    return BA_graph
+    numInitNodes = numAvgEdges # HYPERPARAMETER
+    graph = networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, model)
+    return graph
 
 
 
-def BA_Model(numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
+def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
     # check input parameters
     if numInitNodes < numAvgEdges:
         raise ValueError("The number of initial connected nodes should be " 
         + "greater than the number of average edges to be added")
 
     # create an initial connected graph of numInitNodes nodes
+    # where each newly added node forms exactly one edge with an existing node
     random.seed(setSeed)
-    edgeProb = 0.5
-    BA_graph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
-    for nodeIdx in range(numInitNodes):
-        sampleEdge = np.random.binomial(n=1, p=edgeProb, size=numInitNodes)
-        existEdge = np.nonzero(sampleEdge)[0]
-        existEdge = existEdge[np.nonzero(existEdge == nodeIdx)]
-        BA_graph[nodeIdx, existEdge] = 1
+    syntheticGraph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
+    for nodeIdx in range(1, numInitNodes):
+        sampleEdge = np.random.shuffle(range(nodeIdx))[0]
+        syntheticGraph[nodeIdx, sampleEdge] = 1
+        syntheticGraph[sampleEdge, nodeIdx] = 1
     
     # Add new nodes one at a time
     for nodeIdx in range(numInitNodes, numFinalNodes):
-        # calculate the probility of connecting to each existing node
-        sumG = BA_graph.sum(axis=1)
-        degree = np.squeeze(np.asarray(sumG))
-        overallDegree = np.sum(degree)
-        edgeProb = degree[:nodeIdx] / overallDegree
+        if model=='BA' or model=='reverseBA':
+            # calculate the probility of connecting to each existing node
+            sumG = syntheticGraph.sum(axis=1)
+            degree = np.squeeze(np.asarray(sumG))
+            overallDegree = np.sum(degree)
+            edgeProb = degree[:nodeIdx] / overallDegree
 
-        # select the numAvgEdges most probable nodes to connect 
-        mostProbableEdge = np.argsort((-1)*edgeProb)[:numAvgEdges]
-        BA_graph[nodeIdx, mostProbableEdge] = 1
-        BA_graph[mostProbableEdge, nodeIdx] = 1
-    
-    return BA_graph
+            if model == 'BA':
+                # select the numAvgEdges most connected nodes to form edges
+                connectEdge = np.argsort((-1)*edgeProb)[:numAvgEdges]
+            elif model == 'reverseBA':
+                # select the numAvgEdges least connected nodes to form edges
+                connectEdge = np.argsort(edgeProb)[:numAvgEdges]
+        
+        elif model == "indepAttachment":
+            # randomly select m nodes to form edges
+            connectEdge = np.random.shuffle(range(nodeIdx))[:numAvgEdges]
+
+        syntheticGraph[nodeIdx, connectEdge] = 1
+        syntheticGraph[connectEdge, nodeIdx] = 1
+
+    return syntheticGraph
 
 
 
