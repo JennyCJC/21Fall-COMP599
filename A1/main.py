@@ -8,8 +8,8 @@ from questions import *
 # citationEdgeList = np.loadtxt("networks/citation.edgelist.txt", dtype=int)
 # wwwEdgeList = np.loadtxt("networks/www.edgelist.txt", dtype=int)
 # internetEdgeList = np.loadtxt("networks/internet.edgelist.txt", dtype=int)
-# phonecallsEdgeList = np.loadtxt("networks/phonecalls.edgelist.txt", dtype=int)
-powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
+phonecallsEdgeList = np.loadtxt("networks/phonecalls.edgelist.txt", dtype=int)
+# powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
 # using protein to test for now, reading all the data in at once is sloooooowwwwwww
 
 
@@ -19,8 +19,8 @@ powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
 # proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 # citationSimpleGraph = generateSimpleGraph(citationEdgeList)
 # internetSimpleGraph = generateSimpleGraph(internetEdgeList)
-# phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
-powergridSimpleGraph = generateSimpleGraph(powergridEdgeList)
+phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
+# powergridSimpleGraph = generateSimpleGraph(powergridEdgeList)
 
 
 #########
@@ -29,11 +29,17 @@ powergridSimpleGraph = generateSimpleGraph(powergridEdgeList)
 def main():
     # Question 1
     # networkPatterns(proteinSimpleGraph)
-    # networkPatterns(phonecallsSimpleGraph)
-    networkPatterns(powergridSimpleGraph)
+    networkPatterns(phonecallsSimpleGraph)
+    # networkPatterns(powergridSimpleGraph)
     # Question 3
-    # proteinBAGraph = create_BA_Graph(proteinSimpleGraph)
-    # networkPatterns(proteinBAGraph)
+    # proteinSyntheticGraph1 = syntheticGraph("BA", proteinSimpleGraph)
+    # networkPatterns(proteinSyntheticGraph1)
+
+    # proteinSynthetic2 = syntheticGraph("reverseBA", proteinSimpleGraph)
+    # networkPatterns(proteinSyntheticGraph2)
+
+    # proteinSynthetic3 = syntheticGraph("indepAttachment", proteinSimpleGraph)
+    # networkPatterns(proteinSyntheticGraph3)
     
 
 
