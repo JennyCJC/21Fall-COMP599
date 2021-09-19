@@ -32,13 +32,13 @@ def main():
     # networkPatterns(phonecallsSimpleGraph)
     # networkPatterns(powergridSimpleGraph)
     # Question 3
-    proteinSyntheticGraph1 = syntheticGraph(proteinSimpleGraph, "BA")
+    # proteinSyntheticGraph1 = syntheticGraph(proteinSimpleGraph, "BA")
     # networkPatterns(proteinSyntheticGraph1)
 
     # proteinSynthetic2 = syntheticGraph(proteinSimpleGraph, "reverseBA")
     # networkPatterns(proteinSyntheticGraph2)
 
-    # proteinSynthetic3 = syntheticGraph(proteinSimpleGraph, "indepAttachment")
+    proteinSynthetic3 = syntheticGraph(proteinSimpleGraph, "indepAttachment")
     # networkPatterns(proteinSyntheticGraph3)
     
 
