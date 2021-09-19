@@ -188,15 +188,16 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
             edgeProb = degree[:nodeIdx] / overallDegree
 
             if model == 'BA':
-                # select the numAvgEdges most connected nodes to form edges
-                connectEdge = np.argsort((-1)*edgeProb)[:numAvgEdges]
+                # select the numAvgEdges nodes based on preferential attachment to form edges
+                connectEdge = np.random.choice(range(nodeIdx), size=numAvgEdges, p=edgeProb)
+                # print(connectEdge)
             elif model == 'reverseBA':
-                # select the numAvgEdges least connected nodes to form edges
-                connectEdge = np.argsort(edgeProb)[:numAvgEdges]
-        
+                # select the numAvgEdges based on the inverse of preferential attachment to form edges
+                inverseEdgeProb=findInverseEdgeProb(edgeProb)
+                connectEdge = np.random.choice(range(nodeIdx), size=numAvgEdges, p=inverseEdgeProb)  
         elif model == "indepAttachment":
             # randomly select m nodes to form edges
-            connectEdge = np.random.shuffle(range(nodeIdx))[:numAvgEdges]
+            connectEdge = np.random.choice(range(nodeIdx), size=numAvgEdges)
 
         syntheticGraph[nodeIdx, connectEdge] = 1
         syntheticGraph[connectEdge, nodeIdx] = 1
@@ -216,7 +217,17 @@ def createInitialGraph(numInitNodes, numFinalNodes, setSeed=0):
     return syntheticGraph
 
 
-
+def findInverseEdgeProb(edgeProb):
+    sortIndex = np.argsort(edgeProb)
+    nodeNum = len(sortIndex)
+    sortInverse = nodeNum-sortIndex-1
+    inverseEdgeProb = []
+    for i in range(nodeNum):
+        for j in range(nodeNum):
+            if sortInverse[i] == sortIndex[j]:
+                inverseEdgeProb.append(edgeProb[j])
+                break
+    return inverseEdgeProb
 
  
 
