@@ -4,22 +4,22 @@ from questions import *
 
 #########
 #Raw data
-# proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
+proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
 # citationEdgeList = np.loadtxt("networks/citation.edgelist.txt", dtype=int)
 # wwwEdgeList = np.loadtxt("networks/www.edgelist.txt", dtype=int)
 # internetEdgeList = np.loadtxt("networks/internet.edgelist.txt", dtype=int)
-phonecallsEdgeList = np.loadtxt("networks/phonecalls.edgelist.txt", dtype=int)
+# phonecallsEdgeList = np.loadtxt("networks/phonecalls.edgelist.txt", dtype=int)
 # powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
 # using protein to test for now, reading all the data in at once is sloooooowwwwwww
 
 
 #########
-#Simple Graphs and Execution of functions
+#Simple Graphs
 
-# proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
+proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 # citationSimpleGraph = generateSimpleGraph(citationEdgeList)
 # internetSimpleGraph = generateSimpleGraph(internetEdgeList)
-phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
+# phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
 # powergridSimpleGraph = generateSimpleGraph(powergridEdgeList)
 
 
@@ -29,16 +29,16 @@ phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
 def main():
     # Question 1
     # networkPatterns(proteinSimpleGraph)
-    networkPatterns(phonecallsSimpleGraph)
+    # networkPatterns(phonecallsSimpleGraph)
     # networkPatterns(powergridSimpleGraph)
     # Question 3
-    # proteinSyntheticGraph1 = syntheticGraph("BA", proteinSimpleGraph)
+    proteinSyntheticGraph1 = syntheticGraph(proteinSimpleGraph, "BA")
     # networkPatterns(proteinSyntheticGraph1)
 
-    # proteinSynthetic2 = syntheticGraph("reverseBA", proteinSimpleGraph)
+    # proteinSynthetic2 = syntheticGraph(proteinSimpleGraph, "reverseBA")
     # networkPatterns(proteinSyntheticGraph2)
 
-    # proteinSynthetic3 = syntheticGraph("indepAttachment", proteinSimpleGraph)
+    # proteinSynthetic3 = syntheticGraph(proteinSimpleGraph, "indepAttachment")
     # networkPatterns(proteinSyntheticGraph3)
     
 

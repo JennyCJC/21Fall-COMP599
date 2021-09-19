@@ -176,12 +176,7 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
 
     # create an initial connected graph of numInitNodes nodes
     # where each newly added node forms exactly one edge with an existing node
-    random.seed(setSeed)
-    syntheticGraph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
-    for nodeIdx in range(1, numInitNodes):
-        sampleEdge = np.random.shuffle(range(nodeIdx))[0]
-        syntheticGraph[nodeIdx, sampleEdge] = 1
-        syntheticGraph[sampleEdge, nodeIdx] = 1
+    syntheticGraph = createInitialGraph(numInitNodes, numFinalNodes, setSeed=0)
     
     # Add new nodes one at a time
     for nodeIdx in range(numInitNodes, numFinalNodes):
@@ -208,7 +203,17 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
 
     return syntheticGraph
 
+def createInitialGraph(numInitNodes, numFinalNodes, setSeed=0):
+    random.seed(setSeed)
+    syntheticGraph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
+    for nodeIdx in range(1, numInitNodes):
+        targetRange = range(nodeIdx)
+        np.random.shuffle(targetRange)
+        sampleEdge = targetRange[0]
+        syntheticGraph[nodeIdx, sampleEdge] = 1
+        syntheticGraph[sampleEdge, nodeIdx] = 1
 
+    return syntheticGraph
 
 
 
