@@ -16,21 +16,23 @@ def freq(x):
     return freqs
 
 #bin size would be reduced if no data lies in the bin
-def logBinning(binSize, degreeData):
+def binning(binSize, degreeData, type=None):
     if binSize >= len(degreeData):
         raise ValueError('Your bin size should be smaller than the data size.')
 
     if binSize < 3:
         raise ValueError('Your bin size should be greater than 2 to allow meaningful bins')
 
-    binRange = np.logspace(0, math.log(max(degreeData[:, 0]), 10), binSize-2)
+    if type == 'loglog':
+        binRange = np.logspace(0, math.log(max(degreeData[:, 0]), 10), binSize-2)
+    elif type == None:
+        binRange = np.linspace(0, max(degreeData[:, 0]), num=binSize-2)
 
     binnedData = []
     for i in range(0, binSize):
         binnedData.append([])
 
     for data in degreeData:
-        prevBin = binRange[0]
         mark = False
         for i in range(0, binSize-3):
             if binRange[i] <= data[0] < binRange[i+1]:

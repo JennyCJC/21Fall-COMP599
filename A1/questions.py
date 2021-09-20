@@ -22,9 +22,8 @@ def degreeDistribution(simpleGraph):
     sumG = simpleGraph.sum(axis=1)
     sumArray = np.squeeze(np.asarray(sumG))
     degreeData = np.array(freq(sumArray))
-
     #log binning with bin size 15, but bin could also be removed if no data belongs to the bin
-    degreeData = np.array(logBinning(15, degreeData))
+    degreeData = np.array(binning(15, degreeData, 'loglog'))
     
     #find polynomial fit
     logX = list(map(math.log1p, degreeData[:, 0]))
@@ -69,7 +68,7 @@ def clusterCoefDistribution(simpleGraph):
     print("Average clustering coefficient calculated by taking the mean:  " + str(avgC))
 
     # show the distribution in a plot
-    plotGraph(uniqueC, freq, 'Clustering coefficient', 'Cumulative probability', 'Clustering coefficient distribution', 'line')
+    plotGraph(uniqueC, counts, 'Clustering coefficient', 'Frequncy', 'Clustering coefficient distribution', 'line')
 
 
 
