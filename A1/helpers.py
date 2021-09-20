@@ -61,14 +61,20 @@ def binning(binSize, degreeData, type=None):
 
     return np.array(averagePoint)
             
-def plotGraph(xData, yData, xLabel, yLabel, title, type):
-    if type == 'line':
-        plt.plot(xData, yData, linewidth=2.5)
-    elif type == 'scatter':
-        plt.scatter(xData, yData)
+def plotGraph(xData, yData, xLabel, yLabel, title, type, scale='normal'):
+    if scale == 'normal':
+        if type == 'line':
+            plt.plot(xData, yData, linewidth=2.5)
+        elif type == 'scatter':
+            plt.scatter(xData, yData)
+    elif scale == 'loglog':
+        if type == 'line':
+            plt.loglog(xData, yData)
+        elif type == 'scatter':
+            plt.loglog(xData, yData, "o")
     plt.title(title, fontsize=14)
-    plt.xlim(min(xData), max(xData))
-    plt.ylim(min(yData), max(yData))
+    plt.xlim(min(xData), max(xData)+1)
+    plt.ylim(min(yData), max(yData)+1)
     plt.xlabel(xLabel, fontsize=12.5)
     plt.ylabel(yLabel, fontsize=12.5)
     plt.show()

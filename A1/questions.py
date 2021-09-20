@@ -112,7 +112,7 @@ def eigenvalueDistribution(simpleGraph):
     # eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
 
     #faster way to calculate eval_min
-    eval_min = scipy.linalg.eigvalsh(laplacian, eigvals=(0, 2000))
+    eval_min = scipy.linalg.eigvalsh(laplacian, eigvals=(0, 1000))
     uniqueE, counts = np.unique(eval_min, return_counts=True)
     nonZero = uniqueE[np.nonzero(uniqueE)]
     print('Spectral gap is: ' + str(min(nonZero)))
@@ -134,10 +134,13 @@ def degreeCorrelation(simpleGraph):
     overallCorr = np.corrcoef(sourceDegree, destinationDegree)[0,1]
     print("Overall degree correlation: " + str(overallCorr))
 
-    # plot degree of source VS degree of destination
-    plotGraph(sourceDegree, destinationDegree, "Degree of source nodes", "Degree of destination nodes", "Degree correlation", 'scatter')
-    # HAVEN'T BIN EDGES WITH LOW INTENSITY TO CAPTURE REGIONS WITH HIGH DENSITY
+    degreeData = []
+    degreeData.append(sourceDegree)
+    degreeData.append(destinationDegree)
 
+    binnedData = binning(500, np.array(degreeData).T, 'loglog')
+    # plot degree of source VS degree of destination
+    plotGraph(binnedData[:, 0], binnedData[:, 1], "Degree of source nodes", "Degree of destination nodes", 'Degree Correlation Distribution', 'scatter', 'loglog')
 
 
 def degreeClusterCoefRelation(simpleGraph):
@@ -153,8 +156,11 @@ def degreeClusterCoefRelation(simpleGraph):
     finiteC = numClosedPath[finiteIdx] / numPath[finiteIdx]
 
     # plot degree VS clustering coefficient
-    degree = degree[finiteIdx]
-    plotGraph(degree, finiteC, "Degree of source nodes", "Degree of destination nodes", "Degree correlation", 'scatter')
+    degreeData = []
+    degreeData.append(degree[finiteIdx])
+    degreeData.append(finiteC)
+    binnedData = binning(500, np.array(degreeData).T, 'loglog')
+    plotGraph(binnedData[:, 0], binnedData[:, 1], "Degree of source nodes", "Clustering Coefficient", 'Degree-Clustering Coefficient Relation', 'scatter', 'loglog')
 
 
 
