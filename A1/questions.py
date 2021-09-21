@@ -7,13 +7,13 @@ from helpers import *
 import math
 
 def networkPatterns(simpleGraph):
-    # degreeDistribution(simpleGraph)         #1A
-    # clusterCoefDistribution(simpleGraph)    #1B
+    degreeDistribution(simpleGraph)         #1A
+    clusterCoefDistribution(simpleGraph)    #1B
     shortestPathDistribution(simpleGraph)   #1C
-    # connectivity(simpleGraph)               #1D
-    # eigenvalueDistribution(simpleGraph)     #1E
-    # degreeCorrelation(simpleGraph)          #1F
-    # degreeClusterCoefRelation(simpleGraph)  #1G
+    connectivity(simpleGraph)               #1D
+    eigenvalueDistribution(simpleGraph)     #1E
+    degreeCorrelation(simpleGraph)          #1F
+    degreeClusterCoefRelation(simpleGraph)  #1G
 
 
 
@@ -188,7 +188,7 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
     # create an initial connected graph of numInitNodes nodes
     # where each newly added node forms exactly one edge with an existing node
     syntheticGraph = createInitialGraph(numInitNodes, numFinalNodes, setSeed=0)
-    
+
     # Add new nodes one at a time
     for nodeIdx in range(numInitNodes, numFinalNodes):
         if model=='BA' or model=='reverseBA':
@@ -221,6 +221,7 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
 
 def createInitialGraph(numInitNodes, numFinalNodes, setSeed=0):
     random.seed(setSeed)
+
     syntheticGraph = sparse.csc_matrix((numFinalNodes, numFinalNodes), dtype=np.int8)
     for nodeIdx in range(1, numInitNodes):
         targetRange = range(nodeIdx)
