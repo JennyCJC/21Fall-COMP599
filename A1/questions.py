@@ -40,6 +40,7 @@ def degreeDistribution(simpleGraph):
     plt.loglog(degreeData[:, 0],degreeData[:, 1], "o")
     plt.xlabel('Degrees', fontsize=12.5)
     plt.ylabel('Frequency', fontsize=12.5)
+    plt.title('Degree Distribution')
     plt.show()
     
     #return slope

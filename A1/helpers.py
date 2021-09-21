@@ -73,8 +73,8 @@ def plotGraph(xData, yData, xLabel, yLabel, title, type, scale='normal'):
         elif type == 'scatter':
             plt.loglog(xData, yData, "o")
     plt.title(title, fontsize=14)
-    plt.xlim(min(xData), max(xData)+1)
-    plt.ylim(min(yData), max(yData)+1)
+    plt.xlim(min(xData), max(xData))
+    plt.ylim(min(yData), max(yData))
     plt.xlabel(xLabel, fontsize=12.5)
     plt.ylabel(yLabel, fontsize=12.5)
     plt.show()
