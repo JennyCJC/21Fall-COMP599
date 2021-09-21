@@ -7,13 +7,13 @@ from helpers import *
 import math
 
 def networkPatterns(simpleGraph):
-    #degreeDistribution(simpleGraph)         #1A
-    #clusterCoefDistribution(simpleGraph)    #1B
-    #shortestPathDistribution(simpleGraph)   #1C
-    #connectivity(simpleGraph)               #1D
-    #eigenvalueDistribution(simpleGraph)     #1E
-    degreeCorrelation(simpleGraph)          #1F
-    #degreeClusterCoefRelation(simpleGraph)  #1G
+    # degreeDistribution(simpleGraph)         #1A
+    # clusterCoefDistribution(simpleGraph)    #1B
+    shortestPathDistribution(simpleGraph)   #1C
+    # connectivity(simpleGraph)               #1D
+    # eigenvalueDistribution(simpleGraph)     #1E
+    # degreeCorrelation(simpleGraph)          #1F
+    # degreeClusterCoefRelation(simpleGraph)  #1G
 
 
 
@@ -81,7 +81,11 @@ def shortestPathDistribution(simpleGraph):
     uniqueDistance = uniqueDistance[finiteIdx]
     counts = counts[finiteIdx]
     cumFreq = np.cumsum(counts) / sum(counts)
-    freq = counts / sum(counts)
+    freq = counts / sum(counts)           
+
+    distIndx = np.isfinite(distance)
+    distanceData = distance[distIndx]
+    print('Average shortest path: ' + str(sum(distanceData)/(len(distanceData))))
 
      #show shortest distance distribution with number of nodes
     plotGraph(uniqueDistance, counts, 'Shortest Distance', 'Number of Nodes', 'Shortest path distribution', 'line')
