@@ -16,21 +16,23 @@ def freq(x):
     return freqs
 
 #bin size would be reduced if no data lies in the bin
-def logBinning(binSize, degreeData):
+def binning(binSize, degreeData, type=None):
     if binSize >= len(degreeData):
         raise ValueError('Your bin size should be smaller than the data size.')
 
     if binSize < 3:
         raise ValueError('Your bin size should be greater than 2 to allow meaningful bins')
 
-    binRange = np.logspace(0, math.log(max(degreeData[:, 0]), 10), binSize-2)
+    if type == 'loglog':
+        binRange = np.logspace(0, math.log(max(degreeData[:, 0]), 10), binSize-2)
+    elif type == None:
+        binRange = np.linspace(0, max(degreeData[:, 0]), num=binSize-2)
 
     binnedData = []
     for i in range(0, binSize):
         binnedData.append([])
 
     for data in degreeData:
-        prevBin = binRange[0]
         mark = False
         for i in range(0, binSize-3):
             if binRange[i] <= data[0] < binRange[i+1]:
@@ -59,11 +61,17 @@ def logBinning(binSize, degreeData):
 
     return np.array(averagePoint)
             
-def plotGraph(xData, yData, xLabel, yLabel, title, type):
-    if type == 'line':
-        plt.plot(xData, yData, linewidth=2.5)
-    elif type == 'scatter':
-        plt.scatter(xData, yData)
+def plotGraph(xData, yData, xLabel, yLabel, title, type, scale='normal'):
+    if scale == 'normal':
+        if type == 'line':
+            plt.plot(xData, yData, linewidth=2.5)
+        elif type == 'scatter':
+            plt.scatter(xData, yData)
+    elif scale == 'loglog':
+        if type == 'line':
+            plt.loglog(xData, yData)
+        elif type == 'scatter':
+            plt.loglog(xData, yData, "o")
     plt.title(title, fontsize=14)
     plt.xlim(min(xData), max(xData))
     plt.ylim(min(yData), max(yData))
