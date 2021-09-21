@@ -117,6 +117,7 @@ def eigenvalueDistribution(simpleGraph):
     # eval_max = sparse.linalg.eigs(laplacian, k=100, which='LM')
 
     #faster way to calculate eval_min
+    #eigvals input could be changed if no eigenvalue besides 0 is found
     eval_min = scipy.linalg.eigvalsh(laplacian, eigvals=(0, 1000))
     uniqueE, counts = np.unique(eval_min, return_counts=True)
     nonZero = uniqueE[np.nonzero(uniqueE)]
@@ -195,7 +196,11 @@ def networkModel(model, numInitNodes, numFinalNodes, numAvgEdges, setSeed=0):
             sumG = syntheticGraph.sum(axis=1)
             degree = np.squeeze(np.asarray(sumG))
             overallDegree = np.sum(degree)
-            edgeProb = degree[:nodeIdx] / overallDegree
+
+            if overallDegree == 0:
+                edgeProb = np.ones(nodeIdx)/nodeIdx
+            else:
+                edgeProb = degree[:nodeIdx] / overallDegree
 
             if model == 'BA':
                 # select the numAvgEdges nodes based on preferential attachment to form edges
