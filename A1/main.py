@@ -4,23 +4,16 @@ from questions import *
 
 #########
 #Raw data
-proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
-# citationEdgeList = np.loadtxt("networks/citation.edgelist.txt", dtype=int)
-# wwwEdgeList = np.loadtxt("networks/www.edgelist.txt", dtype=int)
-# internetEdgeList = np.loadtxt("networks/internet.edgelist.txt", dtype=int)
-# phonecallsEdgeList = np.loadtxt("networks/phonecalls.edgelist.txt", dtype=int)
-# powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
-# using protein to test for now, reading all the data in at once is sloooooowwwwwww
-
+# proteinEdgeList = np.loadtxt("networks/protein.edgelist.txt", dtype=int)
+powergridEdgeList = np.loadtxt("networks/powergrid.edgelist.txt", dtype=int)
+metabolicEdgeList = np.loadtxt("networks/metabolic.edgelist.txt", dtype=int)
 
 #########
 #Simple Graphs
 
-proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
-# citationSimpleGraph = generateSimpleGraph(citationEdgeList)
-# internetSimpleGraph = generateSimpleGraph(internetEdgeList)
-# phonecallsSimpleGraph = generateSimpleGraph(phonecallsEdgeList)
+# proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 # powergridSimpleGraph = generateSimpleGraph(powergridEdgeList)
+metabolicSimpleGraph = generateSimpleGraph(metabolicEdgeList)
 
 
 #########
@@ -29,17 +22,32 @@ proteinSimpleGraph = generateSimpleGraph(proteinEdgeList)
 def main():
     # Question 1
     # networkPatterns(proteinSimpleGraph)
-    # networkPatterns(phonecallsSimpleGraph)
     # networkPatterns(powergridSimpleGraph)
+    networkPatterns(metabolicSimpleGraph)
+
     # Question 3
     # proteinSyntheticGraph1 = syntheticGraph(proteinSimpleGraph, "BA")
     # networkPatterns(proteinSyntheticGraph1)
 
-    # proteinSynthetic2 = syntheticGraph(proteinSimpleGraph, "reverseBA")
+    # proteinSyntheticGraph2 = syntheticGraph(proteinSimpleGraph, "reverseBA")
     # networkPatterns(proteinSyntheticGraph2)
 
-    proteinSynthetic3 = syntheticGraph(proteinSimpleGraph, "indepAttachment")
+    # proteinSyntheticGraph3 = syntheticGraph(proteinSimpleGraph, "indepAttachment")
     # networkPatterns(proteinSyntheticGraph3)
+
+    metabolicSyntheticGraph1 = syntheticGraph(metabolicSimpleGraph, "BA")
+    networkPatterns(metabolicSyntheticGraph1)
+    metabolicSyntheticGraph2 = syntheticGraph(metabolicSimpleGraph, "reverseBA")
+    networkPatterns(metabolicSyntheticGraph2)
+    metabolicSyntheticGraph3 = syntheticGraph(metabolicSimpleGraph, "indepAttachment")
+    networkPatterns(metabolicSyntheticGraph3)
+
+    # powergridSyntheticGraph1 = syntheticGraph(powergridSimpleGraph, "BA")
+    # networkPatterns(powergridSyntheticGraph1)
+    # powergridSyntheticGraph2 = syntheticGraph(powergridSimpleGraph, "reverseBA")
+    # networkPatterns(powergridSyntheticGraph2)
+    # powergridSyntheticGraph3 = syntheticGraph(powergridSimpleGraph, "indepAttachment")
+    # networkPatterns(powergridSyntheticGraph3)
     
 
 
