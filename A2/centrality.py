@@ -44,7 +44,7 @@ def eigenvectorCentrality(graphData):
     printRankingResults('Eigenvector centrality', mostImportantEmail, highestEVCentrality)
 
 
-def KatzCentrality(graphData):
+def katzCentrality(graphData):
     # set alpha to be less than 1/eval_max
     laplacian = sparse.csgraph.laplacian(graphData).asfptype()
     laplacian = laplacian.todense()
@@ -68,7 +68,7 @@ def betweennessCentrality(graphData):
 def mostImportantNodes(graphData):
     degreeCentrality(graphData)
     eigenvectorCentrality(graphData)
-    KatzCentrality(graphData)
+    katzCentrality(graphData)
     #betweennessCentrality(graphData)
 
 
