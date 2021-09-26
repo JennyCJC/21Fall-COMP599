@@ -1,33 +1,8 @@
 import networkx as nx
 import numpy as np
 import pandas as pd
-import scipy.sparse.linalg
 from scipy import sparse
-
-
-def convertIndex2Names(index):
-    dataFrame = pd.read_table("email-Enron/addresses-email-Enron.txt", 
-                names=['Index', 'Email Address'])
-    mostImportantEmail = dataFrame[dataFrame['Index'].isin(index)]
-    mostImportantEmail = mostImportantEmail['Email Address']
-    return np.asarray(mostImportantEmail)
-
-
-def postProcessing(dictCentrality):
-    rankings = np.asarray(list(dictCentrality.values()))
-    mostPopularIdx = np.argsort((-1) * rankings) # rank from highest to lowest
-    mostPopularIdx = mostPopularIdx[0:5]
-    mostImportantEmail = convertIndex2Names(mostPopularIdx)
-    highestCentrality = rankings[mostPopularIdx]
-    return (mostImportantEmail, highestCentrality)
-
-
-def printRankingResults(centralityMeasure, mostImportantEmail, highestCentrality):
-    print(centralityMeasure + ': ')
-    for i in range(5):
-        print('Ranking: ' + str(i+1) + ';   Email: ' + mostImportantEmail[i] + 
-        ';  ' + centralityMeasure + ':  '+ str(highestCentrality[i]))
-    print('')
+from helper import *
 
 
 def degreeCentrality(G):
@@ -71,6 +46,3 @@ def mostImportantNodes(G):
     katzCentrality(G)
     #betweennessCentrality(G)
 
-
-
-    
