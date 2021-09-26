@@ -3,6 +3,7 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import collections
 
 #Q1 Helper functions
 def convertIndexToNames(index):
@@ -56,3 +57,14 @@ def partitionVisualization(G, partition, methodName, colorSet, plotLabel=True):
         nx.draw_networkx_labels(G, pos)
     plt.title(methodName, fontsize=16)
     plt.show()
+
+
+def convertDictKeyToInt(dictList):
+    intDictList = {}
+    for key in dictList:
+        intDictList[int(key)] = dictList[key]
+    return intDictList
+
+
+def getLabels(dictList):
+    return list(collections.OrderedDict(sorted(convertDictKeyToInt(dictList).items())).values())
