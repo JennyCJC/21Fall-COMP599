@@ -35,7 +35,7 @@ karateGraph = nx.read_gml('real-classic/karate.gml')
 #Q2: Community detection on graphsß
 #real-classic datasets
 # communityDetection(strikeGraph)
-communityDetection(karateGraph)
+karatePredictions = communityDetection(karateGraph)
 # communityDetection(polbooksGraph, plotLabel=False) 
 # communityDetection(polblogsGraph)  # DUPLICATED EDGE ERROR? 
 # communityDetection(footballGraph)  # DUPLICATED EDGE ERROR?
@@ -50,3 +50,4 @@ communityDetection(karateGraph)
 # communityDetection(LFRGraph, plotLabel=False)
 
 #Performance
+overallPerformance(karateGraph, karatePredictions)
