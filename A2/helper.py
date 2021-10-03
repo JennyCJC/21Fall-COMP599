@@ -68,4 +68,34 @@ def convertDictKeyToInt(dictList):
 
 
 def getLabels(dictList):
-    return list(collections.OrderedDict(sorted(convertDictKeyToInt(dictList).items())).values())
+    return list(collections.OrderedDict(sorted(dictList.items())).values())
+
+def getSetsFromLabels(labels):
+    communitySets = []
+    communityNum = max(list(labels.values()))
+
+    for i in range(communityNum+1):
+        communitySets.append(set())
+
+    for key, value in labels.items():
+        communitySets[int(value)].add(key)
+
+    return communitySets
+
+def getLabelDictFromCommunities(communities):
+    labelDict = {}
+    ct = 0
+    for community in communities:
+        for node in community:
+            labelDict[node] = ct
+        ct +=1
+    return labelDict
+
+def getUniqueCommunities(graph):
+    communities = []
+    nodeDict = dict(graph.nodes(data='community', default={}))
+
+    for value in nodeDict.values():
+        if value not in communities:
+            communities.append(value)
+    return communities
