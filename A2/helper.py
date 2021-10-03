@@ -40,17 +40,18 @@ def convertFrozenset2Dict(partitionList):
     return partition
 
 
-def convertLabel2Dict(labels):    
+def convertLabel2Dict(G, labels):    
     partition = {}
-    for nodeIdx in range(1, len(labels)+1):
-        partition[str(nodeIdx)] = labels[nodeIdx-1]
+    nodeNames = list(G.nodes)
+    for nodeIdx in range(len(labels)):
+        partition[nodeNames[nodeIdx]] = labels[nodeIdx]
     return partition
 
 def partitionVisualization(G, partition, methodName, colorSet, plotLabel=True):
     pos = nx.spring_layout(G)
     # color the nodes according to their partition
     cmap = cm.get_cmap(colorSet, max(partition.values()) + 1)
-    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=400,
+    nx.draw_networkx_nodes(G, pos, partition.keys(), node_size=200,
                        cmap=cmap, node_color=list(partition.values()))
     nx.draw_networkx_edges(G, pos, width=2.0, alpha=0.5)
     if plotLabel:
