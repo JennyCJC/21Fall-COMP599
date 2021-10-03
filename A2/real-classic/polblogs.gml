@@ -1,6 +1,6 @@
 Creator "Lada Adamic on Tue Aug 15 2006"
 graph [
-  multigraph 1
+  directed 1
   node [
     id 1
     label "100monkeystyping.com"

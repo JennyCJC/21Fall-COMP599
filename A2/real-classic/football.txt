@@ -19,6 +19,3 @@ conferences they belong.  The values are as follows:
 If you make use of these data, please cite M. Girvan and M. E. J. Newman,
 Community structure in social and biological networks,
 Proc. Natl. Acad. Sci. USA 99, 7821-7826 (2002).
-
-Correction: Two edges were erroneously duplicated in this data set, and
-have been removed (21 SEP 2014)

@@ -26,7 +26,7 @@ def spectralClustering(G, nClusters=4, colorSets=['Set2', 'Accent', 'Set3'], plo
     csr = nx.convert_matrix.to_scipy_sparse_matrix(G)
     sc = SpectralClustering(n_clusters=nClusters, affinity='precomputed', n_init=1000)
     sc.fit(csr)
-    partition = convertLabel2Dict(G, sc.labels_)
+    partition = convertLabel2Dict(sc.labels_)
     partitionVisualization(G, partition, 'Spectral clustering', colorSets[2], plotLabel)
     return max(list(partition.values()))+1, partition
         
