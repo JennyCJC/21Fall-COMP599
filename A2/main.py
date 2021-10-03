@@ -10,17 +10,17 @@ from helper import *
 
 #Processing data
 
-# emailsList = np.loadtxt("email-Enron/email-Enron.txt", dtype=int)
-# emailGraph = generateCSC(createUniqueEdges(np.delete(emailsList, 2, 1)))
+emailsList = np.loadtxt("email-Enron/email-Enron.txt", dtype=int)
+emailGraph = generateCSC(createUniqueEdges(np.delete(emailsList, 2, 1)))
 
 # strikeGraph = nx.read_gml('real-classic/strike.gml')
-karateGraph = nx.read_gml('real-classic/karate.gml')
+# karateGraph = nx.read_gml('real-classic/karate.gml')
 # polbooksGraph = nx.read_gml('real-classic/polbooks.gml')
-#polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
-# #footballGraph = nx.read_gml('real-classic/football.gml')
+# polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
+# footballGraph = nx.read_gml('real-classic/football.gml')
 
-# coraDict = np.load('real-node-label/ind.cora.graph', allow_pickle=True)
-# coraGraph = nx.Graph(dict(coraDict))
+coraDict = np.load('real-node-label/ind.cora.graph', allow_pickle=True)
+coraGraph = nx.Graph(dict(coraDict))
 # citeseerDict = np.load('real-node-label/ind.citeseer.graph', allow_pickle=True)
 # citeseerGraph = nx.Graph(dict(citeseerDict))
 # pubmedDict = np.load('real-node-label/ind.pubmed.graph', allow_pickle=True)
@@ -35,13 +35,13 @@ karateGraph = nx.read_gml('real-classic/karate.gml')
 #Q2: Community detection on graphsß
 #real-classic datasets
 # communityDetection(strikeGraph)
-karatePredictions = communityDetection(karateGraph)
+# karatePredictions = communityDetection(karateGraph)
 # communityDetection(polbooksGraph, plotLabel=False) 
-# communityDetection(polblogsGraph)  # DUPLICATED EDGE ERROR? 
-# communityDetection(footballGraph)  # DUPLICATED EDGE ERROR?
+# communityDetection(polblogsGraph, plotLabel=False)  # DUPLICATED EDGE ERROR? 
+# communityDetection(footballGraph, plotLabel=False)  
 
 #real-node-label
-# communityDetection(coraGraph, plotLabel=False)
+communityDetection(coraGraph, plotLabel=False)
 # communityDetection(citeseerGraph, plotLabel=False)
 # communityDetection(pubmedGraph, plotLabel=False)
 
@@ -50,4 +50,4 @@ karatePredictions = communityDetection(karateGraph)
 # communityDetection(LFRGraph, plotLabel=False)
 
 #Performance
-overallPerformance(karateGraph, karatePredictions)
+#overallPerformance(karateGraph, karatePredictions)
