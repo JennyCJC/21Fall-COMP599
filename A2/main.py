@@ -17,7 +17,7 @@ from helper import *
 # karateGraph = nx.read_gml('real-classic/karate.gml')
 # polbooksGraph = nx.read_gml('real-classic/polbooks.gml')
 # polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
-# #footballGraph = nx.read_gml('real-classic/football.gml')
+footballGraph = nx.read_gml('real-classic/football.gml')
 
 # coraDict = np.load('real-node-label/ind.cora.graph', allow_pickle=True)
 # coraGraph = nx.Graph(dict(coraDict))
@@ -47,9 +47,9 @@ from helper import *
 #real-classic datasets
 # strikePredictions = communityDetection(strikeGraph)
 # karatePredictions = communityDetection(karateGraph)
-# polbooksPredictions = communityDetection(polbooksGraph, plotLabel=False) 
-# communityDetection(polblogsGraph)  # DUPLICATED EDGE ERROR? 
-# communityDetection(footballGraph)  # DUPLICATED EDGE ERROR?
+# polbooksPredictions = communityDetection(polbooksGra ph, plotLabel=False) 
+# communityDetection(polblogsGraph, plotLabel=False)  # DUPLICATED EDGE ERROR? 
+footballPredictions = communityDetection(footballGraph, plotLabel=False)  
 
 #real-node-label
 # coraPredictions = communityDetection(coraGraph, plotLabel=False)
@@ -57,10 +57,10 @@ from helper import *
 # pubmedPredictions = communityDetection(pubmedGraph, plotLabel=False)
 
 #LFR
-LFRGraph = nx.generators.community.LFR_benchmark_graph(1000, 3, 1.5, 0.5, average_degree=5, min_community=20, seed=3)
-LFRPredictions = communityDetection(LFRGraph, plotLabel=False)
-LFRcommunities = getUniqueCommunities(LFRGraph)
-LFRLableDict = getLabelDictFromCommunities(LFRcommunities)
+# LFRGraph = nx.generators.community.LFR_benchmark_graph(1000, 3, 1.5, 0.5, average_degree=5, min_community=20, seed=3)
+# LFRPredictions = communityDetection(LFRGraph, plotLabel=False)
+# LFRcommunities = getUniqueCommunities(LFRGraph)
+# LFRLableDict = getLabelDictFromCommunities(LFRcommunities)
 
 
 
@@ -68,6 +68,8 @@ LFRLableDict = getLabelDictFromCommunities(LFRcommunities)
 # overallPerformance(karateGraph, karatePredictions)
 # overallPerformance(strikeGraph, strikePredictions)
 # overallPerformance(polbooksGraph, polbooksPredictions)
+overallPerformance(footballGraph, footballPredictions)
 # overallPerformance(coraGraph, coraPredictions, removeUnlabeled=coraTestIndex, truthLabels=coraOrderedLabels)
 # overallPerformance(citeseerGraph, citeseerPredictions, removeUnlabeled=citeseerTestIndex, truthLabels=citeseerOrderedLabels)
-overallPerformance(LFRGraph, LFRPredictions, truthLabels=getLabels(LFRLableDict))
+# overallPerformance(pubmedGraph, pubmedPredictions, removeUnlabeled=pubmedTestIndex, truthLabels=pubmedOrderedLabels)
+# overallPerformance(LFRGraph, LFRPredictions, truthLabels=getLabels(LFRLableDict))
