@@ -49,7 +49,9 @@ mostImportantNodes(emailGraph)
 strikePredictions = communityDetection(strikeGraph)
 karatePredictions = communityDetection(karateGraph)
 polbooksPredictions = communityDetection(polbooksGraph, plotLabel=False) 
-communityDetection(polblogsGraph, plotLabel=False)  # DUPLICATED EDGE ERROR? 
+polblogsPredictions = communityDetection(polblogsGraph, plotLabel=False) 
+polblogs_GCC = extractGCC(polblogsGraph)
+communityDetection(polblogs_GCC, plotLabel=False) 
 footballPredictions = communityDetection(footballGraph, plotLabel=False)  
 
 #real-node-label
@@ -70,6 +72,7 @@ overallPerformance(karateGraph, karatePredictions)
 overallPerformance(strikeGraph, strikePredictions)
 overallPerformance(polbooksGraph, polbooksPredictions)
 overallPerformance(footballGraph, footballPredictions)
+overallPerformance(polblogsGraph, polblogsPredictions)
 overallPerformance(coraGraph, coraPredictions, removeUnlabeled=coraTestIndex, truthLabels=coraOrderedLabels)
 overallPerformance(citeseerGraph, citeseerPredictions, removeUnlabeled=citeseerTestIndex, truthLabels=citeseerOrderedLabels)
 overallPerformance(pubmedGraph, pubmedPredictions, removeUnlabeled=pubmedTestIndex, truthLabels=pubmedOrderedLabels)
