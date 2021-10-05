@@ -16,15 +16,15 @@ from helper import *
 # strikeGraph = nx.read_gml('real-classic/strike.gml')
 # karateGraph = nx.read_gml('real-classic/karate.gml')
 # polbooksGraph = nx.read_gml('real-classic/polbooks.gml')
-# polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
+polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
 # #footballGraph = nx.read_gml('real-classic/football.gml')
 
 # coraDict = np.load('real-node-label/ind.cora.graph', allow_pickle=True)
-# coraGraph = nx.Graph(dict(coraDict))
+# oraGraph = nx.Graph(dict(coraDict))
 # citeseerDict = np.load('real-node-label/ind.citeseer.graph', allow_pickle=True)
 # citeseerGraph = nx.Graph(dict(citeseerDict))
-# pubmedDict = np.load('real-node-label/ind.pubmed.graph', allow_pickle=True)
-# pubmedGraph = nx.Graph(dict(pubmedDict))
+pubmedDict = np.load('real-node-label/ind.pubmed.graph', allow_pickle=True)
+pubmedGraph = nx.Graph(dict(pubmedDict))
 
 # coraLabel = np.load('real-node-label/ind.cora.ally', allow_pickle=True)
 # coraTestIndex = np.loadtxt('real-node-label/ind.cora.test.index')
@@ -48,8 +48,10 @@ from helper import *
 # strikePredictions = communityDetection(strikeGraph)
 # karatePredictions = communityDetection(karateGraph)
 # polbooksPredictions = communityDetection(polbooksGraph, plotLabel=False) 
-# communityDetection(polblogsGraph)  # DUPLICATED EDGE ERROR? 
-# communityDetection(footballGraph)  # DUPLICATED EDGE ERROR?
+# polblogsPredictions = communityDetection(polblogsGraph, plotLabel=False) 
+# polblogsGCC = extractGCC(polblogsGraph)
+# communityDetection(polblogsGCC, plotLabel=False)
+# footballPredictions = communityDetection(footballGraph) 
 
 #real-node-label
 # coraPredictions = communityDetection(coraGraph, plotLabel=False)
@@ -68,6 +70,7 @@ LFRLableDict = getLabelDictFromCommunities(LFRcommunities)
 # overallPerformance(karateGraph, karatePredictions)
 # overallPerformance(strikeGraph, strikePredictions)
 # overallPerformance(polbooksGraph, polbooksPredictions)
+# overallPerformance(polblogsGraph, polblogsPredictions)
 # overallPerformance(coraGraph, coraPredictions, removeUnlabeled=coraTestIndex, truthLabels=coraOrderedLabels)
 # overallPerformance(citeseerGraph, citeseerPredictions, removeUnlabeled=citeseerTestIndex, truthLabels=citeseerOrderedLabels)
 overallPerformance(LFRGraph, LFRPredictions, truthLabels=getLabels(LFRLableDict))

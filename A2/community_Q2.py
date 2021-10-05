@@ -8,16 +8,22 @@ from helper import *
 import copy
 
 
-def louvainClustering(G, colorSets=['Set2', 'Accent', 'Set3'], plotLabel=True):
+def louvainClustering(G, colorSets=['Set2', 'Accent', 'Set3'], plotLabel=True, largeNetwork=False):
     partition = community_louvain.best_partition(G)
-    partitionVisualization(G, partition, 'Louvain clustering', colorSets[0], plotLabel)
+    #communities = convertDist2List(partition)
+    #print(communities)
+    partitionVisualization(G, partition, 'Louvain clustering', colorSets[0], plotLabel, largeNetwork)
     return max(list(partition.values()))+1, partition
 
 
-def fastModularityClustering(G, colorSets=['Set2', 'Accent', 'Set3'], plotLabel=True):
+def fastModularityClustering(G, colorSets=['Set2', 'Accent', 'Set3'], plotLabel=True, largeNetwork=False):
     partitionList = greedy_modularity_communities(G)
     partition = convertFrozenset2Dict(partitionList)
-    partitionVisualization(G, partition, 'Fast modularity clustering', colorSets[1], plotLabel)
+    if largeNetwork:
+        communities = partitionList
+    else:
+        communities = partition
+    partitionVisualization(G, communities, 'Fast modularity clustering', colorSets[1], plotLabel, largeNetwork)
     return max(list(partition.values()))+1, partition
 
 
@@ -31,14 +37,16 @@ def spectralClustering(G, nClusters=4, colorSets=['Set2', 'Accent', 'Set3'], plo
     return max(list(partition.values()))+1, partition
         
 
-def communityDetection(G, plotLabel=True):
-
-    numLouvainClusters, labelLouvain = louvainClustering(G, plotLabel=plotLabel)
-    numFMClusters, labelFM = fastModularityClustering(G, plotLabel=plotLabel)
+def communityDetection(G, plotLabel=True, largeNetwork=False):
+    numLouvainClusters, labelLouvain = louvainClustering(G, plotLabel=plotLabel, largeNetwork=largeNetwork)
+    numFMClusters, labelFM = fastModularityClustering(G, plotLabel=plotLabel, largeNetwork=largeNetwork)
     # numSpectralClusters, labelSpectral = spectralClustering(G, nClusters=int((numLouvainClusters + numFMClusters)/2), plotLabel=plotLabel)
     # , ['Spectral', labelSpectral]
+    print("Number of communities by Louvain: " + str(numLouvainClusters))
+    print("Number of communities by Fast Modularity: " + str(numFMClusters))
     
     return ['Louvain', labelLouvain], ['Fast Modularity', labelFM]
+
 
 
 def evaluatePerformance(groundTruth, prediction, graph):
