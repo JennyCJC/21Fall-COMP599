@@ -10,8 +10,6 @@ import copy
 
 def louvainClustering(G, colorSets=['Set2', 'Accent', 'Set3'], plotLabel=True, largeNetwork=False):
     partition = community_louvain.best_partition(G)
-    #communities = convertDist2List(partition)
-    #print(communities)
     partitionVisualization(G, partition, 'Louvain clustering', colorSets[0], plotLabel, largeNetwork)
     return max(list(partition.values()))+1, partition
 
