@@ -99,3 +99,16 @@ def getUniqueCommunities(graph):
         if value not in communities:
             communities.append(value)
     return communities
+
+
+def removeUnlabeledCiteseerNodes(graph, testIndex, labelIndex):
+    nodeList = list(range(len(labelIndex), graph.number_of_nodes()))
+    
+    for i in testIndex.astype(int):
+        if i in nodeList:
+            nodeList.remove(i)
+    
+    for i in nodeList:
+        graph.remove_node(i)
+    
+    return graph
