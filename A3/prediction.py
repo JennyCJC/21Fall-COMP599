@@ -1,6 +1,7 @@
 from networkx.algorithms import node_classification
 from helper import *
 import networkx as nx
+from sklearn import metrics
 
 # node classification 
 def predictNodeLabel(G, method, labelName='value'):
@@ -29,28 +30,55 @@ def classify_real_classic_nodes(G, datasetName, labelName='value'):
 def classify_real_labelled_nodes(G, labels, testIdx):
     orderedLabels = np.nonzero(labels)[1]
     labelledG = addLabel2Nodes(G, testIdx, orderedLabels)
+    print(G.nodes(data=True))
     predLabel_harmonic = predictNodeLabel(labelledG, 'harmonic') # predicted label for all nodes
     predlabel_consistency = predictNodeLabel(labelledG, 'consistency')
 
 
 
 # link prediction
-def linkPrediction_real_classic(G, ebunch=None):
-    maskedG, droppedLinks = dropLinks(G)
-    for method in ['jaccard']:
-        predLinks = predict_links(maskedG, method, ebunch)
 
-
-
-def predict_links(G, method, ebunch=None):
+def predict_links(G, droppedLinks, method, ebunch=None):
     if method == 'jaccard':
-        predLinks = nx.jaccard_coefficient(G, ebunch=ebunch)
+        preds = nx.jaccard_coefficient(G, ebunch=ebunch)
+        fpr, tpr = generateLinkFromCoefficient(preds, droppedLinks, 0.025)
+        return fpr, tpr
+    elif method == 'preferential attachment': 
+        preds = nx.preferential_attachment(G, ebunch=ebunch)
+        fpr, tpr = generateLinkFromCoefficient(preds, droppedLinks, 0.025)
+        # print(predLinks)
+        return fpr, tpr
 
 
+def linkPrediction_real_classic(G, ebunch=None):
+    for method in ['jaccard', 'preferential attachment']:
+        fprList = []
+        tprList = []
+        for i in range(10):
+            print('hi')
+            maskedG, droppedLinks = dropLinks(G)
+            fpr, tpr = predict_links(maskedG, droppedLinks, method, ebunch)
+            fprList.append(fpr)
+            tprList.append(tpr)
+        fprList.sort()
+        tprList.sort()
+        print(metrics.auc(fprList, tprList))
 
+        
 #def linkPrediction_real_labelled():
 
-
+# def linkPrediction_real_classic(G, ebunch=None):
+#     for method in ['jaccard', 'preferential attachment']:
+#         fprList = []
+#         tprList = []
+#         for i in range(10):
+#             maskedG, droppedLinks = dropLinks(G)
+#             fpr, tpr = predict_links(maskedG, droppedLinks, method, ebunch)
+#             fprList.append(fpr)
+#             tprList.append(tpr)
+#         fprList.sort()
+#         tprList.sort()
+#         print(metrics.auc(fprList, tprList))
 
 
 

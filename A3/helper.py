@@ -43,7 +43,7 @@ def plotAccuracy(dropLabelPercentage, accuracies, datasetName, method):
 
 def printNodeClassifResult(datasetName, method, droppedPercentage, accuracies):
     print(datasetName + ' using ' + method + ':')
-    print('%Dropped label: ', droppedPercentage)
+    print('Dropped label: ', droppedPercentage)
     print('Accuracies: ', accuracies)
 
 
@@ -69,6 +69,29 @@ def dropLinks(G, dropProportion=0.2):
     maskedG.remove_edges_from(removeEdges)
     return (maskedG, removeEdges)
 
+def generateLinkFromCoefficient(preds, droppedLinks, threshold):
+    predDict = {}
+    for u, v, p in preds:
+        predDict[(u, v)] = p
 
+    predLinks = []
+    for key, value in sorted(predDict.items(), key=lambda x: x[1]):
+        # threshold is 0.025 for now
+        if value > threshold:
+            predLinks.append(key)
 
+    truePositive = set(predLinks).intersection(droppedLinks)
+    tpr = len(truePositive)/len(droppedLinks)
+    fpr = (len(predLinks)-len(truePositive))/len(predDict)
+    return fpr, tpr
     
+
+def multiGraphToSimpleGraph(M):
+    G = nx.Graph()
+    for u,v,data in M.edges(data=True):
+        w = data['weight'] if 'weight' in data else 1.0
+        if G.has_edge(u,v):
+            G[u][v]['weight'] += w
+        else:
+            G.add_edge(u, v, weight=w)
+    return G
