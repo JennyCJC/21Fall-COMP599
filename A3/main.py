@@ -54,4 +54,4 @@ pubmedGraph = nx.Graph(dict(pubmedDict))
 
 # linkPrediction_real_classic(coraGraph)
 # linkPrediction_real_classic(citeseerGraph)
-linkPrediction_real_classic(pubmedGraph)
+linkPrediction_real_classic(pubmedGraph, 0.1)
