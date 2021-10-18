@@ -38,47 +38,40 @@ def classify_real_labelled_nodes(G, labels, testIdx):
 
 # link prediction
 
-def predict_links(G, droppedLinks, method, ebunch=None):
+def predict_links(G, droppedLinks, method, percentage=None):
+    if percentage > 0:
+        ebunchPred = randomSelection(percentage, droppedLinks)
+        # ebunchNon = randomSelection(percentage, list(nx.classes.function.non_edges(G)))
+        ebunchNon = findNonEdges(G, percentage)
+        ebunch = ebunchPred + ebunchNon
+    else:
+        ebunchPred = droppedLinks
+        ebunch = None
+
     if method == 'jaccard':
-        preds = nx.jaccard_coefficient(G, ebunch=ebunch)
-        fpr, tpr = generateLinkFromCoefficient(preds, droppedLinks, 0.025)
+        preds = nx.jaccard_coefficient(G, ebunch)
+        fpr, tpr = generateLinkFromCoefficient(preds, ebunchPred, 0.025)
         return fpr, tpr
     elif method == 'preferential attachment': 
-        preds = nx.preferential_attachment(G, ebunch=ebunch)
-        fpr, tpr = generateLinkFromCoefficient(preds, droppedLinks, 0.025)
-        # print(predLinks)
+        preds = nx.preferential_attachment(G, ebunch)
+        fpr, tpr = generateLinkFromCoefficient(preds, ebunchPred, 0.025)
         return fpr, tpr
 
 
-def linkPrediction_real_classic(G, ebunch=None):
+def linkPrediction_real_classic(G, percentage=None):
     for method in ['jaccard', 'preferential attachment']:
         fprList = []
         tprList = []
         for i in range(10):
-            print('hi')
             maskedG, droppedLinks = dropLinks(G)
-            fpr, tpr = predict_links(maskedG, droppedLinks, method, ebunch)
+            fpr, tpr = predict_links(maskedG, droppedLinks, method, percentage)
             fprList.append(fpr)
             tprList.append(tpr)
         fprList.sort()
         tprList.sort()
         print(metrics.auc(fprList, tprList))
 
-        
-#def linkPrediction_real_labelled():
 
-# def linkPrediction_real_classic(G, ebunch=None):
-#     for method in ['jaccard', 'preferential attachment']:
-#         fprList = []
-#         tprList = []
-#         for i in range(10):
-#             maskedG, droppedLinks = dropLinks(G)
-#             fpr, tpr = predict_links(maskedG, droppedLinks, method, ebunch)
-#             fprList.append(fpr)
-#             tprList.append(tpr)
-#         fprList.sort()
-#         tprList.sort()
-#         print(metrics.auc(fprList, tprList))
 
 
 

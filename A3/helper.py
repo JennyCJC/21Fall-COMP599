@@ -1,4 +1,5 @@
 import networkx as nx
+from networkx.classes.function import number_of_edges
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -95,3 +96,19 @@ def multiGraphToSimpleGraph(M):
         else:
             G.add_edge(u, v, weight=w)
     return G
+
+def randomSelection(percentage, edges):
+    random.shuffle(edges)
+    selectedEdges = edges[0: int(len(edges)*percentage)]
+    return selectedEdges
+
+def findNonEdges(graph, percentage):
+    number_of_edges = int((nx.classes.function.number_of_edges(graph))*percentage)
+    nonEdgeList = []
+    allNodes = graph.nodes
+    while len(nonEdgeList) <= number_of_edges:
+        n = random.sample(allNodes, k=2)
+        if not graph.has_edge(n[0], n[1]):
+            nonEdgeList.append((n[0], n[1]))
+    
+    return nonEdgeList
