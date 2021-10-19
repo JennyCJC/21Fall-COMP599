@@ -27,14 +27,14 @@ def classify_real_classic_nodes(G, datasetName, labelName='value'):
         printNodeClassifResult(datasetName, method, dropLabelPercentage, accuracies)
 
 
-def classify_real_labelled_nodes(G, labels, testIdx):
+def classify_real_labelled_nodes(G, labels, testIdx, testLabels):
     orderedLabels = np.nonzero(labels)[1]
     labelledG = addLabel2Nodes(G, testIdx, orderedLabels)
-    print(G.nodes(data=True))
     predLabel_harmonic = predictNodeLabel(labelledG, 'harmonic') # predicted label for all nodes
     predlabel_consistency = predictNodeLabel(labelledG, 'consistency')
-
-
+    
+    evaluateAccuracy_realNodeLabel(testLabels, predLabel_harmonic, testIdx, 'Harmonic')
+    evaluateAccuracy_realNodeLabel(testLabels, predlabel_consistency, testIdx, 'Consistency')
 
 # link prediction
 

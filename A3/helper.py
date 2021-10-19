@@ -55,7 +55,16 @@ def getTrainIdx(G, testIdx):
 def addLabel2Nodes(G, testIdx, orderedLabel):
     trainIdx = getTrainIdx(G, testIdx)
     for idx in range(len(trainIdx)):
-        G.nodes[trainIdx[idx]]['label'] = orderedLabel[idx] 
+        if idx<len(orderedLabel):
+            G.nodes[trainIdx[idx]]['value'] = orderedLabel[idx] 
+    return G
+
+
+def evaluateAccuracy_realNodeLabel(testLabels, predLabels, testIdx, method):
+    predLabels = [predLabels[int(i)] for i in testIdx]
+    testLabels = np.nonzero(testLabels)[1]
+    accuracy = np.mean(testLabels == predLabels)
+    print(method + " : " + str(accuracy))
 
 
 
