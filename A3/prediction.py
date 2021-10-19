@@ -39,9 +39,8 @@ def classify_real_labelled_nodes(G, labels, testIdx, testLabels):
 # link prediction
 
 def predict_links(G, droppedLinks, method, percentage=None):
-    if percentage > 0:
+    if percentage != None:
         ebunchPred = randomSelection(percentage, droppedLinks)
-        # ebunchNon = randomSelection(percentage, list(nx.classes.function.non_edges(G)))
         ebunchNon = findNonEdges(G, percentage)
         ebunch = ebunchPred + ebunchNon
     else:
