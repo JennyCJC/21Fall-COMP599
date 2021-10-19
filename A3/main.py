@@ -12,14 +12,14 @@ from prediction import *
 # karateGraph = nx.read_gml('real-classic/karate.gml')
 # polbooksGraph = nx.read_gml('real-classic/polbooks.gml')
 # polblogsGraph = nx.read_gml('real-classic/polblogs.gml')
-# footballGraph = nx.read_gml('real-classic/football.gml')
+footballGraph = nx.read_gml('real-classic/football.gml')
 
 # coraDict = np.load('real-node-label/ind.cora.graph', allow_pickle=True)
 # coraGraph = nx.Graph(dict(coraDict))
 # citeseerDict = np.load('real-node-label/ind.citeseer.graph', allow_pickle=True)
 # citeseerGraph = nx.Graph(dict(citeseerDict))
-pubmedDict = np.load('real-node-label/ind.pubmed.graph', allow_pickle=True)
-pubmedGraph = nx.Graph(dict(pubmedDict))
+# pubmedDict = np.load('real-node-label/ind.pubmed.graph', allow_pickle=True)
+# pubmedGraph = nx.Graph(dict(pubmedDict))
 
 # coraLabel = np.load('real-node-label/ind.cora.ally', allow_pickle=True)
 # coraTestIndex = np.loadtxt('real-node-label/ind.cora.test.index')
@@ -48,10 +48,10 @@ pubmedGraph = nx.Graph(dict(pubmedDict))
 #Link prediction
 # linkPrediction_real_classic(strikeGraph)
 # linkPrediction_real_classic(karateGraph)
-# linkPrediction_real_classic(polbooksGraph) 
-# linkPrediction_real_classic(multiGraphToSimpleGraph(polblogsGraph))    #multigraph
-# linkPrediction_real_classic(footballGraph)
+# linkPrediction_real_classic(multiGraphToSimpleGraph(polbooksGraph))
+# linkPrediction_real_classic(multiGraphToSimpleGraph(polblogsGraph))    
+linkPrediction_real_classic(footballGraph)
 
 # linkPrediction_real_classic(coraGraph)
 # linkPrediction_real_classic(citeseerGraph)
-linkPrediction_real_classic(pubmedGraph, 0.1)
+# linkPrediction_real_classic(pubmedGraph, 0.1)
