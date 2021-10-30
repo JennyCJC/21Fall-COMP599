@@ -7,6 +7,7 @@ def printTopINodesSubgraph(output, i, subgr, induced):
     if induced:
         # inducedSubgr = inducedSubgraph(subgr)
         # inducedSubgr.printTopI(output, i, false)
+        print('not implemented yet')
     else:
         return (output + '_Top' + str(i), subgr)
 
