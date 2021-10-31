@@ -15,3 +15,7 @@ def loadGraph(path):
     adjacency_matrix = np.loadtxt(path, dtype=int)
     graph = nx.convert_matrix.from_numpy_matrix(adjacency_matrix)
     return graph
+
+def removeWeakConnections(g, current, alpha):
+    #remove current from g
+    print('remove weak connections not implemented yet!')

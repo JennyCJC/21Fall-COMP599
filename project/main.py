@@ -23,7 +23,8 @@ def densestSubgraph (dataset, subgraphNum=10, alpha=0.0, algo=2):
 
     while(len(g.edges()) > 0 and i <= subgraphNum):
         start = time.time
-        print('Top' + str(i) + ' of ' + str(k) + ' started...')
+        print('Top ' + str(i) + ' of ' + str(k) + ' started...')
+        #current is current densest subgraph
         current = set()
 
         if algo == 0:
@@ -34,12 +35,13 @@ def densestSubgraph (dataset, subgraphNum=10, alpha=0.0, algo=2):
             
             # current = filtering(g)
         else:
-            current = ch.charikarDicts(g)
+            current, best_avg = ch.charikarDicts(g)
         
         currentSize = len(current)
-        topSubgraphs.append(printTopINodesSubgraph(dataset+'alpha'+alpha+'alg'+algo, i, current, flase))
+        topSubgraphs.append(printTopINodesSubgraph(dataset+'alpha'+str(alpha)+'alg'+str(algo), i, current, False))
 
         m = removeWeakConnections(g, current, alpha)
+        i+=1
 
 
     
