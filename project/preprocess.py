@@ -4,5 +4,5 @@ import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 
-adjacency_matrix = np.loadtxt("datasets/adolescents/asd/Caltech_0051472.txt", dtype=int)
+adjacency_matrix = np.loadtxt("datasets/children/asd/KKI_0050792.txt", dtype=int)
 graph = nx.convert_matrix.from_numpy_matrix(adjacency_matrix)

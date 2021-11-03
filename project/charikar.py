@@ -1,5 +1,6 @@
 import networkx as nx
 import copy
+from helper import *
 
 def charikarDicts(G):
  
@@ -16,13 +17,7 @@ def charikarDicts(G):
     for node, deg in G.degree():
         nodes[node] = S[node]
 
-    nodesCopy = {}
-
-    for element in nodes:
-        elementValues = {}
-        for el in nodes[element]:
-            elementValues[el] = nodes[element][el]
-        nodesCopy[element] = elementValues  
+    nodesCopy = atlasViewCopy(nodes)
 
     while nodesCopy.keys():
         avg_degree = (2.0 * E)/N
