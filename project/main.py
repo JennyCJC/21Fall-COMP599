@@ -40,13 +40,13 @@ def densestSubgraph (dataset, subgraphNum=10, alpha=0.0, algo=2):
         currentSize = len(current)
         topSubgraphs.append(printTopINodesSubgraph(dataset+'alpha'+str(alpha)+'alg'+str(algo), i, current, False))
 
-        m = removeWeakConnections(g, current, alpha)
+        g, m = removeWeakConnections(g, current, alpha)
         i+=1
 
 
     
 def main():
-    densestSubgraph("datasets/adolescents/asd/Caltech_0051472.txt")
+    densestSubgraph("datasets/children/asd/KKI_0050792.txt")
 
 if __name__ == "__main__":
     main()
