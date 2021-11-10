@@ -12,7 +12,7 @@ def printTopINodesSubgraph(output, i, subgr, induced):
         return (output + '_Top' + str(i), subgr)
 
 def loadGraph(path):
-    adjacency_matrix = np.loadtxt(path, dtype=int)
+    adjacency_matrix = np.loadtxt(path, dtype=float)
     graph = nx.convert_matrix.from_numpy_matrix(adjacency_matrix)
     return graph
 

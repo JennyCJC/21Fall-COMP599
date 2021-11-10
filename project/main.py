@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import time
 import charikar as ch
 from helper import *
+from preprocess import *
 
 #TODO: handle input I/O
 k = 10
@@ -12,7 +13,7 @@ alpha = 0
 algo = 1
 
 #alpha is the threshold for the overlapping.
-def densestSubgraph (dataset, subgraphNum=10, alpha=0.0, algo=2):
+def densestSubgraph (dataset, subgraphNum=3, alpha=0.2, algo=2):
     g = loadGraph(dataset)
     nodeCt = len(g.nodes())
     i = 1
@@ -42,11 +43,19 @@ def densestSubgraph (dataset, subgraphNum=10, alpha=0.0, algo=2):
 
         g, m = removeWeakConnections(g, current, alpha)
         i+=1
-
+    return topSubgraphs
 
     
 def main():
-    densestSubgraph("datasets/children/asd/KKI_0050792.txt")
+
+    #diffG = make_difference_graph("datasets/children")
+    #A = nx.adjacency_matrix(diffG)
+    #np.savetxt("datasets/children/diffGraph", A.todense())
+    topSubgraphs = densestSubgraph("datasets/children/diffGraph", alpha=0.2)
+    nx.draw(topSubgraphs[0][1])
+    plt.show()
+
+
 
 if __name__ == "__main__":
     main()
