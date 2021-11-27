@@ -79,3 +79,32 @@ def removeWeakConnections(g, currentSubgr, alpha):
     g.remove_nodes_from(currentSubgr)
 
     return g, m
+
+def networkVisualization(G):
+    nx.draw_kamada_kawai(G)
+    plt.show()
+    
+
+def showTopSubgraphs(topSubgraphs):
+    nx.draw(topSubgraphs[0][1], node_size=500, node_color='lightcoral')
+    plt.title('Densest subgraph')
+    print(topSubgraphs[0][1].degree)
+    plt.show()
+    
+    nx.draw(topSubgraphs[1][1], node_size=500, node_color='cornflowerblue')
+    plt.title('Densest subgraph')
+    print(topSubgraphs[1][1].degree)
+    plt.show()
+    
+    nx.draw(topSubgraphs[2][1], node_size=500, node_color='slategray')
+    plt.title('Densest subgraph')
+    print(topSubgraphs[2][1].degree)
+    plt.show()
+    
+    print(topSubgraphs[0][1].number_of_nodes())
+    print(topSubgraphs[0][1].nodes())
+    print(topSubgraphs[1][1].number_of_nodes())
+    print(topSubgraphs[1][1].nodes())
+    print(topSubgraphs[2][1].number_of_nodes())
+    print(topSubgraphs[2][1].nodes())
+    #networkVisualization(diffG)

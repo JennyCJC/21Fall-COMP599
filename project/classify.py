@@ -18,8 +18,9 @@ def graphFeature(G, topSubgraphs, feature):
     '''
     extract the feature vector for each brain sample
     '''
+    G = nx.convert_matrix.from_numpy_matrix(G)
     k = len(topSubgraphs)
-    featureVec = np.empty((1,k))
+    featureVec = np.empty(k)
     for i_subG in range(k):
         contrastSubG= topSubgraphs[i_subG][1]
         subgraph = G.subgraph(contrastSubG.nodes())
@@ -35,18 +36,18 @@ def constructDesignMatrix(path, topSubgraphs, feature='numEdges'):
     We use label 1 to indicate an "ASD patient", label 0 to indicate a healthy person
     ''' 
     G_asd = load_graphs(path, 'asd')
-    n_asd = np.shape(G_asd, -1)
+    n_asd = np.shape(G_asd)[-1]
     G_td = load_graphs(path, 'td')
-    n_td = np.shape(G_td, -1)
+    n_td = np.shape(G_td)[-1]
     n_total = n_asd + n_td
     
-    G = np.stack((G_asd, G_td), axis=-1)
-    labels = np.vstack((np.ones((n_asd, 1), np.zeros((n_td, 1)))))
+    G = np.concatenate((G_asd, G_td), axis=2)
+    labels = np.concatenate((np.ones(n_asd), np.zeros(n_td)), axis=0)
     featureMatrix = np.empty((n_total, len(topSubgraphs)))
     for i in range(n_total):
         featureMatrix[i,:] = graphFeature(G[:,:,i], topSubgraphs, feature)
  
-    return (featureMatrix, labels)
+    return featureMatrix, labels
     
     
     
@@ -56,17 +57,17 @@ def svm_classifier(path, topSubgraphs):
     Use k-fold cross validation to tune the hyperparameter C
     Report the test accuracy
     '''
-    (features, labels) = constructDesignMatrix(path, topSubgraphs, feature='numEdges')
+    features, labels = constructDesignMatrix(path, topSubgraphs, feature='numEdges')
     X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.2)
     
     # Hyperparameter tuning
     param_grid = {'C': [0.1, 1, 10, 100, 1000],
               'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
               'kernel': ['rbf']}
-    grid = GridSearchCV(SVC(), param_grid, refit = True, verbose = 3)
+    grid = GridSearchCV(SVC(), param_grid, refit = True, verbose = 1)
     grid.fit(X_train, y_train)
     grid_predictions = grid.predict(X_test)
-    print(confusion_matrix(y_test, grid_predictions))
+    print(confusion_matrix(y_test, grid_predictions)/np.shape(y_test)[0])
     
     
 
