@@ -6,6 +6,7 @@ import time
 import charikar as ch
 from helper import *
 from preprocess import *
+from LPAlgorithms import findMinimal
 from classify import *
 
 #TODO: handle input I/O
@@ -33,9 +34,7 @@ def densestSubgraph (dataset, subgraphNum=10, alpha=0.8, algo=2):
             # current = approxChar
             print('not implemented yet')
         elif algo == 1:
-            print('not implemented yet')
-            
-            # current = filtering(g)
+            current = findMinimal(g)
         else:
             current, best_avg = ch.charikarDicts(g)
         
