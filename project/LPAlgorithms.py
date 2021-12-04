@@ -95,7 +95,10 @@ def findMinimal(G):
     G = nx.convert_node_labels_to_integers(G)
     p_apx = getDensity(G)
 
-    # TODO: iteratively remove nodes with degree less than p_apx (it's probably just for performance)
+    for node, deg in G.degree():
+        if deg < p_apx:
+            G.remove_node(node)
+    G = nx.convert_node_labels_to_integers(G)
 
     G_ = fastLP(G, basicLP(G))
     p_max = getDensity(G)
