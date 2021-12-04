@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import os,glob
+from preprocess import * 
 
 def printTopINodesSubgraph(output, i, subgr, induced):
     if induced:
@@ -108,3 +110,32 @@ def showTopSubgraphs(topSubgraphs):
     print(topSubgraphs[2][1].number_of_nodes())
     print(topSubgraphs[2][1].nodes())
     #networkVisualization(diffG)
+
+
+def generateEdgelists (folder_path):
+
+    if not os.path.isdir(str(folder_path + '/asdsEdgelists')):
+        os.makedirs(folder_path+'/asdsEdgelists')
+
+    if not os.path.isdir(str(folder_path + '/tdsEdgelists')):
+        os.makedirs(folder_path+'/tdsEdgelists')
+
+    asds = load_graphs(folder_path, "asd")
+    tds = load_graphs(folder_path, "td")
+    
+    asds = np.swapaxes(asds, 0, 2)
+    tds = np.swapaxes(tds, 0, 2)
+
+    i = 0;
+
+    for A in asds:
+        g = nx.convert_matrix.from_numpy_matrix(A)
+        nx.readwrite.edgelist.write_edgelist(g, str(folder_path+'/asdsEdgelists/'+str(i)+'.txt'), data=False)
+        i+=1
+    
+    i = 0;
+    for A in tds:
+        g = nx.convert_matrix.from_numpy_matrix(A)
+        nx.readwrite.edgelist.write_edgelist(g, str(folder_path+'/tdsEdgelists/'+str(i)+'.txt'), data=False)
+        i+=1
+    
