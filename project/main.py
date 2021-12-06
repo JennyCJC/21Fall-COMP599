@@ -6,6 +6,7 @@ import time
 import charikar as ch
 from helper import *
 from preprocess import *
+from LPAlgorithms import findMinimal
 from classify import *
 from LPAlgorithms import findMinimal
 from gurobipy import * 
