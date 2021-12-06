@@ -18,8 +18,9 @@ def load_graphs(path, category):
     i = 0
 
     for file in os.listdir(path):
-        graphs[:,:,i] = np.loadtxt(path + file, dtype=int)
-        i = i+1
+        if os.path.isfile(os.path.join(path, file)):
+            graphs[:,:,i] = np.loadtxt(path + file, dtype=float)
+            i = i+1
         
     return graphs
     
