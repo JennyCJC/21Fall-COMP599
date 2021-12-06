@@ -2,20 +2,23 @@ from scipy.optimize import linprog
 import networkx as nx
 from charikar import charikarDicts
 import random
+import numpy as np
+
 def getDensity(G):
     return len(G.edges)/len(G.nodes)
 
 def basicLP(G):
     n = len(G.nodes)
     m = len(G.edges)
+    print("basic LP: Initial size n =",n, ', m =',m)
 
-    c = [(-1 if i < m else 0) for i in range(n+m)]
+    c = [(-1 if i < m else 0) for i in range(n+m)]  # len:6692
     A = []
 
     for i in range(len(G.edges)):
         e = list(G.edges)[i]
-        A1 = [0 for i in range(n + m)]
-        A2 = [0 for i in range(n + m)]
+        A1 = [0 for i in range(n + m)]  # len:6692
+        A2 = [0 for i in range(n + m)]  # len:6692
         A1[i] = 1
         A1[e[0]+m] = -1
 
@@ -30,10 +33,16 @@ def basicLP(G):
     b = [0 for i in range(len(A)-1)]
     b.append(1)
 
-    bounds = [(0, None) for i in range(n+m)]
-
-    res = linprog(c, A_ub=A, b_ub=b, bounds=bounds)
-
+    #bounds = [(0, None) for i in range(n+m)]
+    bounds = [(0, 1) for i in range(n+m)]
+    
+    print("A: ", len(A))
+    print("B:", len(b))
+    print("Bounds: ", len(bounds))
+    print("----Start LP optimization---")
+    res = linprog(-np.asarray(c), A_ub=np.asarray(A), b_ub=np.asarray(b), bounds=np.asarray(bounds))
+    print("----Finish LP optimization----")
+    
     return [round(x, 6) for x in res.x]
 
 def fastLP(G, basicLP_results):
@@ -115,4 +124,3 @@ def findMinimal(G):
             G_ = H1
         else:
             G_ = H1 if len(H1.nodes) <= len(H2.nodes) else H2
-

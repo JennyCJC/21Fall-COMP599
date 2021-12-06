@@ -8,6 +8,8 @@ from helper import *
 from preprocess import *
 from LPAlgorithms import findMinimal
 from classify import *
+from LPAlgorithms import findMinimal
+from gurobipy import * 
 
 #TODO: handle input I/O
 k = 10
@@ -15,7 +17,7 @@ alpha = 0
 algo = 1
 
 #alpha is the threshold for the overlapping.
-def densestSubgraph (dataset, subgraphNum=10, alpha=0.8, algo=2):
+def densestSubgraph (dataset, subgraphNum=3, alpha=0.8, algo=1):
     g = loadGraph(dataset)
     nodeCt = len(g.nodes())
     i = 1
@@ -56,9 +58,10 @@ def main():
     #nx.draw(topSubgraphs[0][1])
     #plt.show()
 
-    topSubgraphs = densestSubgraph("datasets/children/diffGraph", alpha=0.9)
-    svm_classifier("datasets/children/", topSubgraphs)
-    
+    topSubgraphs = densestSubgraph("datasets/adolescents/diffGraph", subgraphNum=5, alpha=0.9, algo=2)
+    svm_classifier("male", topSubgraphs, method="graph2vec")
+
+    #edgelist_files("datasets/male/td")
 
 
 if __name__ == "__main__":

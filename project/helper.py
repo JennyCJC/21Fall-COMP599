@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
+import pandas as pd
+import json
+import os
 import os,glob
 from preprocess import * 
 
@@ -17,6 +20,36 @@ def loadGraph(path):
     adjacency_matrix = np.loadtxt(path, dtype=float)
     graph = nx.convert_matrix.from_numpy_matrix(adjacency_matrix)
     return graph
+
+
+def edgelist_format(path, outfileName):
+    graph = loadGraph(path)
+    features = {}
+    for i in range(graph.number_of_nodes()):
+        features[str(i)] = str(graph.degree[i])
+    
+    edgelist = list(nx.convert.to_edgelist(graph))
+    edges = []
+    for i in range(len(edgelist)):
+        edges.append([edgelist[i][0], edgelist[i][1]])
+    
+    graph_dict = {}
+    graph_dict['edges'] = edges
+    graph_dict['features'] = features
+    
+    print(outfileName)
+    with open(outfileName, 'w') as outfile:
+        json.dump(graph_dict, outfile, ensure_ascii=False)   
+    
+    
+def edgelist_files(path):
+    outIdx = 0
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path,file)):
+            outfileName = os.path.join(path, "edgelist/"+ str(outIdx) + ".json")
+            edgelist_format(os.path.join(path,file), outfileName)
+            outIdx = outIdx + 1
+
 
 def atlasViewCopy(atlasView):
     copy = {}
@@ -110,32 +143,14 @@ def showTopSubgraphs(topSubgraphs):
     print(topSubgraphs[2][1].number_of_nodes())
     print(topSubgraphs[2][1].nodes())
     #networkVisualization(diffG)
-
-
-def generateEdgelists (folder_path):
-
-    if not os.path.isdir(str(folder_path + '/asdsEdgelists')):
-        os.makedirs(folder_path+'/asdsEdgelists')
-
-    if not os.path.isdir(str(folder_path + '/tdsEdgelists')):
-        os.makedirs(folder_path+'/tdsEdgelists')
-
-    asds = load_graphs(folder_path, "asd")
-    tds = load_graphs(folder_path, "td")
     
-    asds = np.swapaxes(asds, 0, 2)
-    tds = np.swapaxes(tds, 0, 2)
-
-    i = 0;
-
-    for A in asds:
-        g = nx.convert_matrix.from_numpy_matrix(A)
-        nx.readwrite.edgelist.write_edgelist(g, str(folder_path+'/asdsEdgelists/'+str(i)+'.txt'), data=False)
-        i+=1
     
-    i = 0;
-    for A in tds:
-        g = nx.convert_matrix.from_numpy_matrix(A)
-        nx.readwrite.edgelist.write_edgelist(g, str(folder_path+'/tdsEdgelists/'+str(i)+'.txt'), data=False)
-        i+=1
+def load_graph2vec_features(category):
+    path = "/Users/ann/Desktop/Fall2021/COMP599/21Fall-COMP599/project/graph2vec/features"
+    features_asd = pd.read_csv(os.path.join(path, category+'_asd.csv'), header=None)
+    features_td = pd.read_csv(os.path.join(path, category+'_td.csv'), header=None)
+    features = np.concatenate((features_asd.to_numpy()[1:, 1:], features_td.to_numpy()[1:, 1:]), axis=0)
+    labels = np.concatenate((np.ones(features_asd.shape[0]-1), np.zeros(features_td.shape[0]-1)), axis=0)
+    return features, labels
+
     
